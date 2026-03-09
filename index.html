@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -213,9 +214,10 @@
   async function initTesseract() {
     worker = await Tesseract.createWorker('eng', 1, { logger: () => {} });
     await worker.setParameters({
-      tessedit_char_whitelist: '0123456789.,%€$ ',
-      tessedit_pageseg_mode: '6',
+      tessedit_char_whitelist: '0123456789.,',
+      tessedit_pageseg_mode: '7',
       tessedit_ocr_engine_mode: '1',
+      preserve_interword_spaces: '0',
     });
     workerPronto = true;
   }
@@ -263,12 +265,26 @@
     const cropY = Math.max(0, (vfRect.top - videoRect.top) * scaleY);
     const cropW = Math.min(vfRect.width * scaleX, canvas.width - cropX);
     const cropH = Math.min(vfRect.height * scaleY, canvas.height - cropY);
-    const scale = 3;
+    // Upscaling 4x per più dettaglio
+    const scale = 4;
     const cropCanvas = document.createElement('canvas');
     cropCanvas.width = cropW * scale; cropCanvas.height = cropH * scale;
     const cropCtx = cropCanvas.getContext('2d');
-    cropCtx.filter = 'grayscale(100%) contrast(220%) brightness(115%)';
+
+    // Step 1: disegna con scala di grigi e alto contrasto
+    cropCtx.filter = 'grayscale(100%) contrast(250%) brightness(110%) sharpen(1)';
     cropCtx.drawImage(canvas, cropX, cropY, cropW, cropH, 0, 0, cropCanvas.width, cropCanvas.height);
+
+    // Step 2: soglia adattiva (binarizzazione) per nero/bianco netto
+    const imgData = cropCtx.getImageData(0, 0, cropCanvas.width, cropCanvas.height);
+    const d = imgData.data;
+    for (let i = 0; i < d.length; i += 4) {
+      const avg = (d[i] + d[i+1] + d[i+2]) / 3;
+      const val = avg < 128 ? 0 : 255; // soglia fissa 128
+      d[i] = d[i+1] = d[i+2] = val;
+      d[i+3] = 255;
+    }
+    cropCtx.putImageData(imgData, 0, 0);
     btn.innerHTML = '<div class="spinner"></div>'; btn.disabled = true;
     const sheet = document.getElementById('sheetContent');
     sheet.innerHTML = '<div class="sheet-hint"><div class="spinner"></div><span>Analisi in corso...</span></div>';
@@ -289,11 +305,23 @@
   function resetSheet() { document.getElementById('sheetContent').innerHTML = '<div class="sheet-hint"><span>Inquadra un numero e tocca 📸</span></div>'; }
 
   function estraiNumeri(testo) {
-    let pulito = testo.replace(/[oO]/g,'0').replace(/,/g,'.').replace(/[€$£%°]/g,' ').replace(/[^\d.\s]/g,' ').replace(/\s+/g,' ').trim();
+    console.log('OCR raw:', testo);
+    // Correzioni OCR comuni per cifre
+    let pulito = testo
+      .replace(/[oO]/g, '0')
+      .replace(/[lI|]/g, '1')
+      .replace(/[sS]/g, '5')
+      .replace(/[gq]/g, '9')
+      .replace(/,/g, '.')
+      .replace(/[^\d.\s]/g, ' ')
+      .replace(/\.{2,}/g, '.')       // evita "1..5"
+      .replace(/\s+/g, ' ').trim();
+
     const risultati = new Set();
     for (const m of [...pulito.matchAll(/\b(\d{1,6}(?:\.\d{1,2})?)\b/g)]) {
       const val = parseFloat(m[1]);
-      if (!val || isNaN(val) || [2024,2025,2026].includes(val)) continue;
+      if (!val || isNaN(val)) continue;
+      if ([2024,2025,2026,2027].includes(val)) continue;
       if (tipoCorrente === 'sconto' && val >= 1 && val <= 100) risultati.add(Math.round(val));
       else if (tipoCorrente === 'prezzo' && val >= 0.10 && val <= 99999) risultati.add(Math.round(val * 100) / 100);
     }
