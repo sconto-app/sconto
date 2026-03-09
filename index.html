@@ -12,7 +12,6 @@
 <meta name="apple-mobile-web-app-title" content="Sconti Subito">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap');
   :root {
@@ -22,19 +21,22 @@
   }
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
   .header { padding: 52px 24px 20px; display: flex; align-items: center; gap: 14px; }
   .header-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--green), #00b248); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; box-shadow: 0 4px 20px rgba(0,230,118,0.3); }
   .header h1 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--text); line-height: 1.1; }
   .header p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
   .main { padding: 0 20px 40px; display: flex; flex-direction: column; gap: 16px; }
-  .card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 20px; padding: 20px; cursor: default; transition: all 0.25s ease; position: relative; }
+
+  .card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 20px; padding: 20px; transition: all 0.25s ease; position: relative; }
   .card::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s; pointer-events: none; border-radius: 20px; }
   .card.blue::before { background: radial-gradient(circle at 20% 50%, rgba(68,138,255,0.08) 0%, transparent 70%); }
   .card.orange::before { background: radial-gradient(circle at 20% 50%, rgba(255,145,0,0.08) 0%, transparent 70%); }
-  .card:active { transform: scale(0.98); }
   .card.active::before { opacity: 1; }
   .card.active.blue { border-color: rgba(68,138,255,0.5); }
   .card.active.orange { border-color: rgba(255,145,0,0.5); }
+
   .card-row { display: flex; align-items: center; gap: 14px; }
   .card-icon { width: 46px; height: 46px; border-radius: 13px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
   .blue .card-icon { background: rgba(68,138,255,0.15); }
@@ -42,53 +44,57 @@
   .card-label { font-size: 12px; color: var(--muted); margin-bottom: 3px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
   .card-value { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 700; color: var(--text); }
   .card-value.placeholder { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 400; color: var(--muted); }
+
+  /* Bottone inserisci */
+  .insert-btn {
+    margin-top: 12px; width: 100%; padding: 12px;
+    border-radius: 10px; font-size: 14px; font-weight: 600;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: opacity 0.2s;
+  }
+  .insert-btn:active { opacity: 0.7; }
+  .insert-btn.blue { background: rgba(68,138,255,0.15); border: 1.5px solid rgba(68,138,255,0.4); color: #448aff; }
+  .insert-btn.orange { background: rgba(255,145,0,0.15); border: 1.5px solid rgba(255,145,0,0.4); color: #ff9100; }
+
   .divider { display: flex; align-items: center; gap: 12px; padding: 0 4px; }
   .divider-line { flex: 1; height: 1px; background: var(--border); }
   .divider-text { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+
+  /* Ultimo calcolo */
+  .last-calc {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 14px 18px;
+    display: none;
+    align-items: center;
+    gap: 12px;
+  }
+  .last-calc.show { display: flex; }
+  .last-calc-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+  .last-calc-value { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--text); }
+
   .result { background: linear-gradient(135deg, #0d2b1a, #0a1f2e); border: 1.5px solid rgba(0,230,118,0.25); border-radius: 24px; padding: 28px 24px; text-align: center; display: none; animation: fadeUp 0.4s ease; }
   .result.show { display: block; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
   .result-label { font-size: 11px; color: rgba(0,230,118,0.6); letter-spacing: 2px; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
   .result-price { font-family: 'Syne', sans-serif; font-size: 58px; font-weight: 800; color: var(--green); line-height: 1; text-shadow: 0 0 40px rgba(0,230,118,0.3); }
   .result-saving { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; padding: 6px 16px; background: rgba(0,230,118,0.12); border-radius: 20px; font-size: 15px; font-weight: 500; color: var(--green); }
-  .reset-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border: none; background: none; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer; border-radius: 12px; transition: color 0.2s; }
+
+  .reset-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border: none; background: none; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer; border-radius: 12px; transition: color 0.2s; width: 100%; }
   .reset-btn:active { color: var(--text); }
-  .modal-overlay { position: fixed; inset: 0; background: #000; z-index: 100; display: none; flex-direction: column; }
-  .modal-overlay.show { display: flex; }
-  .camera-wrap { position: relative; flex: 1; overflow: hidden; background: #000; }
-  #videoEl { width: 100%; height: 100%; object-fit: cover; display: block; }
-  #canvasEl { display: none; }
-  .viewfinder { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); width: 78%; max-width: 320px; height: 110px; border: 2.5px solid var(--vf-color, #fff); border-radius: 14px; box-shadow: 0 0 0 2000px rgba(0,0,0,0.5); }
-  .vf-corner { position: absolute; width: 22px; height: 22px; border-color: var(--vf-color, #fff); border-style: solid; }
-  .vf-corner.tl { top: -3px; left: -3px; border-width: 3px 0 0 3px; border-radius: 4px 0 0 0; }
-  .vf-corner.tr { top: -3px; right: -3px; border-width: 3px 3px 0 0; border-radius: 0 4px 0 0; }
-  .vf-corner.bl { bottom: -3px; left: -3px; border-width: 0 0 3px 3px; border-radius: 0 0 0 4px; }
-  .vf-corner.br { bottom: -3px; right: -3px; border-width: 0 3px 3px 0; border-radius: 0 0 4px 0; }
-  .scan-line { position: absolute; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--vf-color, #fff), transparent); animation: scanAnim 2s ease-in-out infinite; opacity: 0.8; }
-  @keyframes scanAnim { 0% { top: 0; } 50% { top: calc(100% - 2px); } 100% { top: 0; } }
-  .camera-top { position: absolute; top: 0; left: 0; right: 0; padding: 52px 20px 16px; display: flex; align-items: center; gap: 14px; background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent); }
-  .back-btn { width: 38px; height: 38px; background: rgba(255,255,255,0.15); border: none; border-radius: 10px; color: #fff; font-size: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
-  .camera-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: #fff; }
-  .camera-subtitle { font-size: 12px; color: rgba(255,255,255,0.6); }
-  .processing-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--vf-color, #fff); margin-left: auto; animation: pulse 1s ease-in-out infinite; }
-  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.2; } }
-  .results-sheet { background: rgba(10,10,15,0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 24px 24px 0 0; padding: 20px 20px 40px; min-height: 180px; border-top: 1px solid rgba(255,255,255,0.08); }
-  .sheet-handle { width: 36px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin: 0 auto 16px; }
-  .sheet-hint { text-align: center; color: var(--muted); font-size: 13px; padding: 20px 0; display: flex; align-items: center; justify-content: center; gap: 8px; }
-  .numbers-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-  .num-btn { padding: 12px 22px; border-radius: 14px; border: 1.5px solid; background: transparent; font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; cursor: pointer; transition: all 0.15s; color: #fff; }
-  .num-btn:active { transform: scale(0.95); }
-  .num-btn.blue-btn { border-color: rgba(68,138,255,0.5); color: var(--blue); }
-  .num-btn.blue-btn:active { background: rgba(68,138,255,0.15); }
-  .num-btn.orange-btn { border-color: rgba(255,145,0,0.5); color: var(--orange); }
-  .num-btn.orange-btn:active { background: rgba(255,145,0,0.15); }
-  .scan-btn { width: 64px; height: 64px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 28px; cursor: pointer; margin: 0 auto 12px; transition: all 0.2s; }
-  .scan-btn:active { background: rgba(255,255,255,0.2); transform: scale(0.95); }
-  .scan-tip { text-align: center; font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
-  .spinner { width: 24px; height: 24px; border: 2.5px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Modal manuale */
+  .modal-bg { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); align-items: flex-end; justify-content: center; }
+  .modal-bg.show { display: flex; }
+  .modal-sheet { background: #13131a; border: 1px solid #2a2a3a; border-radius: 24px 24px 0 0; padding: 28px 24px 48px; width: 100%; max-width: 480px; }
+  .modal-handle { width: 36px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin: 0 auto 20px; }
+
   .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 10px 20px; font-size: 13px; color: var(--text); z-index: 999; white-space: nowrap; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
   .toast.show { opacity: 1; }
+
+  /* Banner PWA */
+  #installBanner { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 200; background: linear-gradient(135deg,#1c1c26,#13131a); border-top: 1px solid #2a2a3a; padding: 16px 20px; align-items: center; gap: 14px; }
 </style>
 </head>
 <body>
@@ -97,37 +103,34 @@
   <div class="header-icon">🏷️</div>
   <div>
     <h1>Sconti Subito</h1>
-    <p>Punta la camera, calcola istantaneamente</p>
+    <p>Calcola il prezzo scontato istantaneamente</p>
   </div>
 </div>
 
 <div class="main">
+
+  <!-- Card Prezzo -->
   <div class="card blue active" id="cardPrezzo">
     <div class="card-row">
       <div class="card-icon">💶</div>
       <div style="flex:1">
         <div class="card-label">1 · Prezzo originale</div>
-        <div class="card-value placeholder" id="valPrezzo">Tocca camera o inserisci</div>
+        <div class="card-value placeholder" id="valPrezzo">Tocca per inserire</div>
       </div>
     </div>
-    <div style="display:flex;gap:8px;margin-top:12px">
-      <button onclick="apriCamera('prezzo')" style="flex:1;padding:10px;background:rgba(68,138,255,0.15);border:1.5px solid rgba(68,138,255,0.4);border-radius:10px;color:#448aff;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">📷 Camera</button>
-      <button onclick="apriManuale('prezzo')" style="flex:1;padding:10px;background:rgba(68,138,255,0.08);border:1.5px solid rgba(68,138,255,0.25);border-radius:10px;color:#448aff;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">✏️ Manuale</button>
-    </div>
+    <button class="insert-btn blue" onclick="apriManuale('prezzo')">✏️ Inserisci prezzo</button>
   </div>
 
+  <!-- Card Sconto -->
   <div class="card orange active" id="cardSconto">
     <div class="card-row">
       <div class="card-icon">%</div>
       <div style="flex:1">
         <div class="card-label">2 · Percentuale sconto</div>
-        <div class="card-value placeholder" id="valSconto">Tocca camera o inserisci</div>
+        <div class="card-value placeholder" id="valSconto">Tocca per inserire</div>
       </div>
     </div>
-    <div style="display:flex;gap:8px;margin-top:12px">
-      <button onclick="apriCamera('sconto')" style="flex:1;padding:10px;background:rgba(255,145,0,0.15);border:1.5px solid rgba(255,145,0,0.4);border-radius:10px;color:#ff9100;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">📷 Camera</button>
-      <button onclick="apriManuale('sconto')" style="flex:1;padding:10px;background:rgba(255,145,0,0.08);border:1.5px solid rgba(255,145,0,0.25);border-radius:10px;color:#ff9100;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">✏️ Manuale</button>
-    </div>
+    <button class="insert-btn orange" onclick="apriManuale('sconto')">✏️ Inserisci sconto</button>
   </div>
 
   <div class="divider">
@@ -136,46 +139,51 @@
     <div class="divider-line"></div>
   </div>
 
+  <!-- Ultimo calcolo -->
+  <div class="last-calc" id="ultimoCalcolo">
+    <div style="font-size:28px">🕐</div>
+    <div style="flex:1">
+      <div class="last-calc-label">Ultimo calcolo</div>
+      <div class="last-calc-value" id="ultimoTesto">—</div>
+    </div>
+    <button onclick="riusaUltimo()" style="padding:8px 14px;background:rgba(0,230,118,0.15);border:1.5px solid rgba(0,230,118,0.4);border-radius:10px;color:#00e676;font-size:12px;font-weight:600;cursor:pointer;">
+      Riusa
+    </button>
+  </div>
+
+  <!-- Risultato -->
   <div class="result" id="risultato">
     <div class="result-label">Prezzo finale</div>
     <div class="result-price" id="prezzoFinale">—</div>
     <div class="result-saving" id="risparmio">💰 Risparmi —</div>
   </div>
 
-  <button class="reset-btn" id="resetBtn" onclick="reset()" style="display:none">↺ Ricomincia</button>
+  <button class="reset-btn" id="resetBtn" onclick="reset()" style="display:none">↺ Nuovo calcolo</button>
+
 </div>
 
-<!-- MODAL CAMERA -->
-<div class="modal-overlay" id="modalCamera">
-  <div class="camera-wrap">
-    <video id="videoEl" autoplay playsinline muted></video>
-    <canvas id="canvasEl"></canvas>
-    <div class="viewfinder" id="viewfinder">
-      <div class="vf-corner tl"></div><div class="vf-corner tr"></div>
-      <div class="vf-corner bl"></div><div class="vf-corner br"></div>
-      <div class="scan-line" id="scanLine"></div>
+<!-- Modal Inserimento -->
+<div class="modal-bg" id="modalManuale">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div id="manTitolo" style="font-family:Syne,sans-serif;font-size:18px;font-weight:700;color:#f0f0f5;margin-bottom:6px">Inserisci prezzo</div>
+    <div id="manSubtitle" style="font-size:13px;color:#6b6b80;margin-bottom:20px">Digita il prezzo in euro</div>
+    <div style="position:relative">
+      <span id="manSymbol" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:22px;font-weight:700;color:#6b6b80">€</span>
+      <input id="manInput" type="number" inputmode="decimal" step="0.01" min="0"
+        style="width:100%;padding:16px 16px 16px 44px;background:#1c1c26;border:1.5px solid #2a2a3a;border-radius:14px;font-family:Syne,sans-serif;font-size:28px;font-weight:700;color:#f0f0f5;outline:none;-moz-appearance:textfield;appearance:textfield"
+        placeholder="0"
+        oninput="aggiornaBottoneConferma(this)">
     </div>
-    <div class="camera-top">
-      <button class="back-btn" onclick="chiudiCamera()">←</button>
-      <div>
-        <div class="camera-title" id="camTitle">Punta al PREZZO</div>
-        <div class="camera-subtitle" id="camSubtitle">Inquadra il cartellino del prezzo</div>
-      </div>
-      <div class="processing-dot" id="procDot"></div>
-    </div>
-  </div>
-  <div class="results-sheet">
-    <div class="sheet-handle"></div>
-    <button class="scan-btn" id="scanBtn" onclick="scatta()">📸</button>
-    <div class="scan-tip">Tocca per scansionare</div>
-    <div id="sheetContent">
-      <div class="sheet-hint"><span>Inquadra un numero e tocca 📸</span></div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button onclick="chiudiManuale()" style="flex:1;padding:14px;background:#1c1c26;border:1.5px solid #2a2a3a;border-radius:12px;color:#6b6b80;font-size:15px;font-weight:600;cursor:pointer">Annulla</button>
+      <button id="manConfirm" onclick="confermaManuale()" style="flex:2;padding:14px;border:none;border-radius:12px;font-family:Syne,sans-serif;font-size:16px;font-weight:700;color:#fff;cursor:pointer;opacity:0.4;background:linear-gradient(135deg,#448aff,#1565c0);transition:opacity 0.2s">✓ Conferma</button>
     </div>
   </div>
 </div>
 
 <!-- Banner PWA -->
-<div id="installBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:200;background:linear-gradient(135deg,#1c1c26,#13131a);border-top:1px solid #2a2a3a;padding:16px 20px;align-items:center;gap:14px;">
+<div id="installBanner">
   <div style="font-size:32px">🏷️</div>
   <div style="flex:1">
     <div style="font-family:Syne,sans-serif;font-weight:700;font-size:15px;color:#f0f0f5">Installa Sconti Subito</div>
@@ -185,266 +193,162 @@
   <button onclick="installApp()" style="background:linear-gradient(135deg,#00e676,#00b248);border:none;border-radius:10px;padding:10px 18px;font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#000;cursor:pointer;white-space:nowrap">Installa</button>
 </div>
 
-<!-- Modal Manuale -->
-<div id="modalManuale" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);align-items:flex-end;justify-content:center">
-  <div style="background:#13131a;border:1px solid #2a2a3a;border-radius:24px 24px 0 0;padding:28px 24px 48px;width:100%;max-width:480px">
-    <div style="width:36px;height:4px;background:rgba(255,255,255,0.2);border-radius:2px;margin:0 auto 20px"></div>
-    <div id="manTitolo" style="font-family:Syne,sans-serif;font-size:18px;font-weight:700;color:#f0f0f5;margin-bottom:6px">Inserisci prezzo</div>
-    <div id="manSubtitle" style="font-size:13px;color:#6b6b80;margin-bottom:20px">Digita il valore manualmente</div>
-    <div style="position:relative">
-      <span id="manSymbol" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:22px;font-weight:700;color:#6b6b80">€</span>
-      <input id="manInput" type="number" inputmode="decimal" step="0.01" min="0"
-        style="width:100%;padding:16px 16px 16px 44px;background:#1c1c26;border:1.5px solid #2a2a3a;border-radius:14px;font-family:Syne,sans-serif;font-size:28px;font-weight:700;color:#f0f0f5;outline:none;-moz-appearance:textfield;appearance:textfield"
-        placeholder="0" oninput="this.style.borderColor=this.value?'var(--man-color)':'#2a2a3a'">
-    </div>
-    <div style="display:flex;gap:10px;margin-top:16px">
-      <button onclick="chiudiManuale()" style="flex:1;padding:14px;background:#1c1c26;border:1.5px solid #2a2a3a;border-radius:12px;color:#6b6b80;font-size:15px;font-weight:600;cursor:pointer">Annulla</button>
-      <button id="manConfirm" onclick="confermaManuale()" style="flex:2;padding:14px;border:none;border-radius:12px;font-family:Syne,sans-serif;font-size:16px;font-weight:700;color:#000;cursor:pointer;background:linear-gradient(135deg,#00e676,#00b248)">✓ Conferma</button>
-    </div>
-  </div>
-</div>
-
 <div class="toast" id="toast"></div>
 
 <script>
   let prezzoOriginale = null, percentualeSconto = null;
-  let tipoCorrente = null, streamCorrente = null;
-  let worker = null, workerPronto = false;
+  let tipoManuale = null;
 
-  async function initTesseract() {
-    worker = await Tesseract.createWorker('eng', 1, { logger: () => {} });
-    await worker.setParameters({
-      tessedit_char_whitelist: '0123456789.,',
-      tessedit_pageseg_mode: '7',
-      tessedit_ocr_engine_mode: '1',
-      preserve_interword_spaces: '0',
-    });
-    workerPronto = true;
-  }
-  initTesseract();
+  // Ultimo calcolo memorizzato
+  let ultimoCalcolo = JSON.parse(localStorage.getItem('ultimoCalcolo') || 'null');
+  if (ultimoCalcolo) mostraUltimoCalcolo();
 
-  async function apriCamera(tipo) {
-    tipoCorrente = tipo;
-    const vf = document.getElementById('viewfinder');
+  // ── MANUALE ──
+  function apriManuale(tipo) {
+    tipoManuale = tipo;
     const isPrezzo = tipo === 'prezzo';
     const colore = isPrezzo ? '#448aff' : '#ff9100';
-    vf.style.setProperty('--vf-color', colore);
-    document.getElementById('scanLine').style.background = `linear-gradient(90deg,transparent,${colore},transparent)`;
-    document.getElementById('camTitle').textContent = isPrezzo ? 'Punta al PREZZO' : 'Punta allo SCONTO';
-    document.getElementById('camSubtitle').textContent = isPrezzo ? 'Inquadra il cartellino del prezzo' : 'Inquadra la percentuale di sconto';
-    document.getElementById('procDot').style.background = colore;
-    resetSheet();
-    document.getElementById('modalCamera').classList.add('show');
-    try {
-      streamCorrente = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', width: { ideal: 1920 }, height: { ideal: 1080 } } });
-      document.getElementById('videoEl').srcObject = streamCorrente;
-    } catch (e) {
-      mostraToast('⚠️ Permesso camera negato');
-      chiudiCamera();
+    document.getElementById('manTitolo').textContent = isPrezzo ? 'Inserisci prezzo' : 'Inserisci sconto';
+    document.getElementById('manSubtitle').textContent = isPrezzo ? 'Digita il prezzo in euro' : 'Digita la percentuale (es. 30)';
+    document.getElementById('manSymbol').textContent = isPrezzo ? '€' : '%';
+    document.getElementById('manSymbol').style.color = colore;
+    document.getElementById('manInput').value = '';
+    document.getElementById('manInput').style.borderColor = '#2a2a3a';
+    document.getElementById('manConfirm').style.opacity = '0.4';
+    document.getElementById('manConfirm').style.background = isPrezzo
+      ? 'linear-gradient(135deg,#448aff,#1565c0)'
+      : 'linear-gradient(135deg,#ff9100,#e65100)';
+    document.getElementById('modalManuale').classList.add('show');
+    setTimeout(() => document.getElementById('manInput').focus(), 150);
+  }
+
+  function aggiornaBottoneConferma(input) {
+    const val = parseFloat(input.value);
+    const valido = val > 0 && !isNaN(val);
+    input.style.borderColor = valido ? (tipoManuale === 'prezzo' ? '#448aff' : '#ff9100') : '#2a2a3a';
+    document.getElementById('manConfirm').style.opacity = valido ? '1' : '0.4';
+  }
+
+  function chiudiManuale() {
+    document.getElementById('modalManuale').classList.remove('show');
+    tipoManuale = null;
+  }
+
+  function confermaManuale() {
+    const val = parseFloat(document.getElementById('manInput').value);
+    if (!val || isNaN(val) || val <= 0) {
+      document.getElementById('manInput').style.borderColor = '#ff1744';
+      document.getElementById('manInput').focus();
+      return;
     }
-  }
-
-  function chiudiCamera() {
-    if (streamCorrente) { streamCorrente.getTracks().forEach(t => t.stop()); streamCorrente = null; }
-    document.getElementById('modalCamera').classList.remove('show');
-    document.getElementById('videoEl').srcObject = null;
-  }
-
-  async function scatta() {
-    const video = document.getElementById('videoEl');
-    const canvas = document.getElementById('canvasEl');
-    const btn = document.getElementById('scanBtn');
-    if (!video.srcObject) { mostraToast('Camera non pronta'); return; }
-    canvas.width = video.videoWidth; canvas.height = video.videoHeight;
-    canvas.getContext('2d').drawImage(video, 0, 0);
-    const scaleX = video.videoWidth / video.clientWidth;
-    const scaleY = video.videoHeight / video.clientHeight;
-    const vfRect = document.getElementById('viewfinder').getBoundingClientRect();
-    const videoRect = video.getBoundingClientRect();
-    const cropX = Math.max(0, (vfRect.left - videoRect.left) * scaleX);
-    const cropY = Math.max(0, (vfRect.top - videoRect.top) * scaleY);
-    const cropW = Math.min(vfRect.width * scaleX, canvas.width - cropX);
-    const cropH = Math.min(vfRect.height * scaleY, canvas.height - cropY);
-    // Upscaling 4x per più dettaglio
-    const scale = 4;
-    const cropCanvas = document.createElement('canvas');
-    cropCanvas.width = cropW * scale; cropCanvas.height = cropH * scale;
-    const cropCtx = cropCanvas.getContext('2d');
-
-    // Step 1: disegna in scala di grigi con alto contrasto
-    cropCtx.filter = 'grayscale(100%) contrast(250%) brightness(110%)';
-    cropCtx.drawImage(canvas, cropX, cropY, cropW, cropH, 0, 0, cropCanvas.width, cropCanvas.height);
-    cropCtx.filter = 'none';
-
-    // Step 2: soglia adattiva su canvas separato (NON tocca la preview camera)
-    const ocrCanvas = document.createElement('canvas');
-    ocrCanvas.width = cropCanvas.width; ocrCanvas.height = cropCanvas.height;
-    const ocrCtx = ocrCanvas.getContext('2d');
-    ocrCtx.drawImage(cropCanvas, 0, 0);
-    const imgData = ocrCtx.getImageData(0, 0, ocrCanvas.width, ocrCanvas.height);
-    const d = imgData.data;
-    const w = ocrCanvas.width, h = ocrCanvas.height;
-
-    // Calcola luminosità media dell'intera immagine
-    let somma = 0;
-    for (let i = 0; i < d.length; i += 4) somma += (d[i] + d[i+1] + d[i+2]) / 3;
-    const mediaLuminosita = somma / (w * h);
-
-    // Soglia adattiva basata sulla media (funziona sia su sfondi chiari che scuri)
-    const soglia = mediaLuminosita * 0.85;
-
-    for (let i = 0; i < d.length; i += 4) {
-      const avg = (d[i] + d[i+1] + d[i+2]) / 3;
-      const val = avg < soglia ? 0 : 255;
-      d[i] = d[i+1] = d[i+2] = val;
-      d[i+3] = 255;
+    if (tipoManuale === 'sconto' && val > 100) {
+      document.getElementById('manInput').style.borderColor = '#ff1744';
+      return;
     }
-    ocrCtx.putImageData(imgData, 0, 0);
-    btn.innerHTML = '<div class="spinner"></div>'; btn.disabled = true;
-    const sheet = document.getElementById('sheetContent');
-    sheet.innerHTML = '<div class="sheet-hint"><div class="spinner"></div><span>Analisi in corso...</span></div>';
-    try {
-      if (!workerPronto) { mostraToast('⏳ OCR in caricamento, riprova'); resetScanBtn(); resetSheet(); return; }
-      
-      // Tentativo 1: immagine binarizzata
-      let result = await worker.recognize(ocrCanvas.toDataURL('image/png'));
-      let numeri = estraiNumeri(result.data.text);
-      console.log('OCR binarizzato:', result.data.text);
 
-      // Tentativo 2: se non trova niente, riprova con immagine originale migliorata
-      if (numeri.length === 0) {
-        console.log('Fallback: immagine originale');
-        result = await worker.recognize(cropCanvas.toDataURL('image/png'));
-        numeri = estraiNumeri(result.data.text);
-        console.log('OCR originale:', result.data.text);
-      }
-      sheet.innerHTML = numeri.length === 0
-        ? '<div class="sheet-hint">⚠️ Nessun numero trovato. Avvicina di più.</div>'
-        : (mostraNumeriFiltrati(numeri), '');
-    } catch (e) {
-      sheet.innerHTML = '<div class="sheet-hint">❌ Errore. Riprova.</div>';
-    }
-    resetScanBtn();
-  }
-
-  function resetScanBtn() { const b = document.getElementById('scanBtn'); b.innerHTML = '📸'; b.disabled = false; }
-  function resetSheet() { document.getElementById('sheetContent').innerHTML = '<div class="sheet-hint"><span>Inquadra un numero e tocca 📸</span></div>'; }
-
-  function estraiNumeri(testo) {
-    console.log('OCR raw:', testo);
-    // Correzioni OCR comuni per cifre
-    let pulito = testo
-      .replace(/[oO]/g, '0')
-      .replace(/[lI|]/g, '1')
-      .replace(/[sS]/g, '5')
-      .replace(/[gq]/g, '9')
-      .replace(/,/g, '.')
-      .replace(/[^\d.\s]/g, ' ')
-      .replace(/\.{2,}/g, '.')       // evita "1..5"
-      .replace(/\s+/g, ' ').trim();
-
-    const risultati = new Set();
-    for (const m of [...pulito.matchAll(/\b(\d{1,6}(?:\.\d{1,2})?)\b/g)]) {
-      const val = parseFloat(m[1]);
-      if (!val || isNaN(val)) continue;
-      if ([2024,2025,2026,2027].includes(val)) continue;
-      if (tipoCorrente === 'sconto' && val >= 1 && val <= 100) risultati.add(Math.round(val));
-      else if (tipoCorrente === 'prezzo' && val >= 0.10 && val <= 99999) risultati.add(Math.round(val * 100) / 100);
-    }
-    return [...risultati].sort((a, b) => a - b);
-  }
-
-  function mostraNumeriFiltrati(numeri) {
-    const isPrezzo = tipoCorrente === 'prezzo';
-    const cls = isPrezzo ? 'blue-btn' : 'orange-btn';
-    let html = '<div style="margin-bottom:10px;font-size:13px;color:var(--muted);text-align:center">Seleziona il numero corretto:</div><div class="numbers-grid">';
-    numeri.forEach(n => {
-      const label = isPrezzo ? `€ ${n % 1 === 0 ? n.toFixed(0) : n.toFixed(2)}` : `${n.toFixed(0)} %`;
-      html += `<button class="num-btn ${cls}" onclick="seleziona(${n})">${label}</button>`;
-    });
-    document.getElementById('sheetContent').innerHTML = html + '</div>';
-  }
-
-  function seleziona(numero) {
-    if (tipoCorrente === 'prezzo') {
-      prezzoOriginale = numero;
+    if (tipoManuale === 'prezzo') {
+      prezzoOriginale = val;
       const el = document.getElementById('valPrezzo');
-      el.textContent = `€ ${numero % 1 === 0 ? numero.toFixed(0) : numero.toFixed(2)}`;
+      el.textContent = `€ ${fmt(val)}`;
       el.classList.remove('placeholder');
+      chiudiManuale();
+      // Auto-apri sconto dopo 300ms
+      setTimeout(() => apriManuale('sconto'), 300);
     } else {
-      percentualeSconto = numero;
+      percentualeSconto = val;
       const el = document.getElementById('valSconto');
-      el.textContent = `${numero.toFixed(0)} %`;
+      el.textContent = `${val.toFixed(0)} %`;
       el.classList.remove('placeholder');
+      chiudiManuale();
+      calcolaRisultato();
     }
-    chiudiCamera();
-    calcolaRisultato();
   }
+
+  // ── CALCOLO ──
+  function fmt(v) { return v % 1 === 0 ? v.toFixed(0) : v.toFixed(2); }
 
   function calcolaRisultato() {
     if (prezzoOriginale === null || percentualeSconto === null) return;
     const finale = prezzoOriginale * (1 - percentualeSconto / 100);
     const risparmio = prezzoOriginale - finale;
-    const fmt = v => v % 1 === 0 ? v.toFixed(0) : v.toFixed(2);
+
     document.getElementById('prezzoFinale').textContent = `€ ${fmt(finale)}`;
     document.getElementById('risparmio').textContent = `💰 Risparmi € ${fmt(risparmio)}`;
     document.getElementById('risultato').classList.add('show');
     document.getElementById('resetBtn').style.display = 'flex';
+
+    // Salva ultimo calcolo
+    ultimoCalcolo = { prezzo: prezzoOriginale, sconto: percentualeSconto, finale, risparmio };
+    localStorage.setItem('ultimoCalcolo', JSON.stringify(ultimoCalcolo));
+    mostraUltimoCalcolo();
   }
 
-  // FIX: testo reset corretto
+  function mostraUltimoCalcolo() {
+    if (!ultimoCalcolo) return;
+    const { prezzo, sconto, finale, risparmio } = ultimoCalcolo;
+    document.getElementById('ultimoTesto').textContent =
+      `€${fmt(prezzo)} − ${sconto}% = €${fmt(finale)} (risparmi €${fmt(risparmio)})`;
+    document.getElementById('ultimoCalcolo').classList.add('show');
+  }
+
+  function riusaUltimo() {
+    if (!ultimoCalcolo) return;
+    prezzoOriginale = ultimoCalcolo.prezzo;
+    percentualeSconto = ultimoCalcolo.sconto;
+    const vp = document.getElementById('valPrezzo');
+    vp.textContent = `€ ${fmt(prezzoOriginale)}`;
+    vp.classList.remove('placeholder');
+    const vs = document.getElementById('valSconto');
+    vs.textContent = `${percentualeSconto.toFixed(0)} %`;
+    vs.classList.remove('placeholder');
+    calcolaRisultato();
+  }
+
+  // ── RESET ──
   function reset() {
     prezzoOriginale = null; percentualeSconto = null;
     const vp = document.getElementById('valPrezzo');
-    vp.textContent = 'Tocca camera o inserisci'; vp.classList.add('placeholder');
+    vp.textContent = 'Tocca per inserire'; vp.classList.add('placeholder');
     const vs = document.getElementById('valSconto');
-    vs.textContent = 'Tocca camera o inserisci'; vs.classList.add('placeholder');
+    vs.textContent = 'Tocca per inserire'; vs.classList.add('placeholder');
     document.getElementById('risultato').classList.remove('show');
     document.getElementById('resetBtn').style.display = 'none';
+    // L'ultimo calcolo rimane visibile
   }
 
+  // ── TOAST ──
   function mostraToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
+  // ── PWA ──
   let deferredPrompt = null;
-  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; document.getElementById('installBanner').style.display = 'flex'; });
-  window.addEventListener('appinstalled', () => { document.getElementById('installBanner').style.display = 'none'; mostraToast('✅ App installata!'); });
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault(); deferredPrompt = e;
+    document.getElementById('installBanner').style.display = 'flex';
+  });
+  window.addEventListener('appinstalled', () => {
+    document.getElementById('installBanner').style.display = 'none';
+    mostraToast('✅ App installata!');
+  });
   function installApp() {
-    if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(() => { deferredPrompt = null; document.getElementById('installBanner').style.display = 'none'; }); }
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(() => {
+        deferredPrompt = null;
+        document.getElementById('installBanner').style.display = 'none';
+      });
+    }
   }
 
   if ('serviceWorker' in navigator) {
-    const swCode = `self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>clients.claim());self.addEventListener('fetch',e=>e.respondWith(fetch(e.request).catch(()=>new Response(''))));`;
-    navigator.serviceWorker.register(URL.createObjectURL(new Blob([swCode], {type:'application/javascript'})), {scope: './'}).catch(() => {});
+    const sw = `self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>clients.claim());self.addEventListener('fetch',e=>e.respondWith(fetch(e.request).catch(()=>new Response(''))));`;
+    navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'})),{scope:'./'}).catch(()=>{});
   }
 
-  let tipoManuale = null;
-  function apriManuale(tipo) {
-    tipoManuale = tipo;
-    const isPrezzo = tipo === 'prezzo';
-    const colore = isPrezzo ? '#448aff' : '#ff9100';
-    document.getElementById('modalManuale').style.display = 'flex';
-    document.getElementById('manTitolo').textContent = isPrezzo ? 'Inserisci prezzo' : 'Inserisci sconto';
-    document.getElementById('manSubtitle').textContent = isPrezzo ? 'Digita il prezzo in euro' : 'Digita la percentuale (es. 50)';
-    document.getElementById('manSymbol').textContent = isPrezzo ? '€' : '%';
-    document.getElementById('manSymbol').style.color = colore;
-    document.getElementById('manInput').style.setProperty('--man-color', colore);
-    document.getElementById('manInput').value = '';
-    document.getElementById('manInput').style.borderColor = '#2a2a3a';
-    document.getElementById('manConfirm').style.background = isPrezzo ? 'linear-gradient(135deg,#448aff,#1565c0)' : 'linear-gradient(135deg,#ff9100,#e65100)';
-    document.getElementById('manConfirm').style.color = '#fff';
-    setTimeout(() => document.getElementById('manInput').focus(), 100);
-  }
-  function chiudiManuale() { document.getElementById('modalManuale').style.display = 'none'; tipoManuale = null; }
-  function confermaManuale() {
-    const val = parseFloat(document.getElementById('manInput').value);
-    if (!val || isNaN(val) || val <= 0) { document.getElementById('manInput').style.borderColor = '#ff1744'; document.getElementById('manInput').focus(); return; }
-    if (tipoManuale === 'sconto' && val > 100) { document.getElementById('manInput').style.borderColor = '#ff1744'; return; }
-    seleziona(val); chiudiManuale();
-  }
+  // Tastiera
   document.addEventListener('keydown', e => {
     if (e.key === 'Enter' && tipoManuale) confermaManuale();
     if (e.key === 'Escape' && tipoManuale) chiudiManuale();
