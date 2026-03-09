@@ -344,7 +344,19 @@
   }
 
   if ('serviceWorker' in navigator) {
-    const sw = `self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>clients.claim());self.addEventListener('fetch',e=>e.respondWith(fetch(e.request).catch(()=>new Response(''))));`;
+    const sw = `
+      const VERSION = 'v3';
+      self.addEventListener('install', e => {
+        self.skipWaiting();
+        e.waitUntil(caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k)))));
+      });
+      self.addEventListener('activate', e => {
+        e.waitUntil(clients.claim());
+      });
+      self.addEventListener('fetch', e => {
+        e.respondWith(fetch(e.request, {cache: 'no-cache'}).catch(() => new Response('')));
+      });
+    `;
     navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'})),{scope:'./'}).catch(()=>{});
   }
 
