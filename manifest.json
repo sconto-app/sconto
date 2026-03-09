@@ -1,0 +1,27 @@
+{
+  "name": "Sconti Subito",
+  "short_name": "Sconti",
+  "description": "Calcolatore sconti con camera OCR",
+  "id": "https://sconto-app.github.io/sconti-subito/",
+  "start_url": "https://sconto-app.github.io/sconti-subito/",
+  "scope": "https://sconto-app.github.io/sconti-subito/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0a0f",
+  "theme_color": "#00e676",
+  "lang": "it",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
