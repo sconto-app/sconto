@@ -271,26 +271,31 @@
     cropCanvas.width = cropW * scale; cropCanvas.height = cropH * scale;
     const cropCtx = cropCanvas.getContext('2d');
 
-    // Step 1: disegna con scala di grigi e alto contrasto
-    cropCtx.filter = 'grayscale(100%) contrast(250%) brightness(110%) sharpen(1)';
+    // Step 1: disegna in scala di grigi con alto contrasto
+    cropCtx.filter = 'grayscale(100%) contrast(250%) brightness(110%)';
     cropCtx.drawImage(canvas, cropX, cropY, cropW, cropH, 0, 0, cropCanvas.width, cropCanvas.height);
+    cropCtx.filter = 'none';
 
-    // Step 2: soglia adattiva (binarizzazione) per nero/bianco netto
-    const imgData = cropCtx.getImageData(0, 0, cropCanvas.width, cropCanvas.height);
+    // Step 2: binarizzazione su canvas separato (NON tocca la preview camera)
+    const ocrCanvas = document.createElement('canvas');
+    ocrCanvas.width = cropCanvas.width; ocrCanvas.height = cropCanvas.height;
+    const ocrCtx = ocrCanvas.getContext('2d');
+    ocrCtx.drawImage(cropCanvas, 0, 0);
+    const imgData = ocrCtx.getImageData(0, 0, ocrCanvas.width, ocrCanvas.height);
     const d = imgData.data;
     for (let i = 0; i < d.length; i += 4) {
       const avg = (d[i] + d[i+1] + d[i+2]) / 3;
-      const val = avg < 128 ? 0 : 255; // soglia fissa 128
+      const val = avg < 140 ? 0 : 255;
       d[i] = d[i+1] = d[i+2] = val;
       d[i+3] = 255;
     }
-    cropCtx.putImageData(imgData, 0, 0);
+    ocrCtx.putImageData(imgData, 0, 0);
     btn.innerHTML = '<div class="spinner"></div>'; btn.disabled = true;
     const sheet = document.getElementById('sheetContent');
     sheet.innerHTML = '<div class="sheet-hint"><div class="spinner"></div><span>Analisi in corso...</span></div>';
     try {
       if (!workerPronto) { mostraToast('⏳ OCR in caricamento, riprova'); resetScanBtn(); resetSheet(); return; }
-      const result = await worker.recognize(cropCanvas.toDataURL('image/png'));
+      const result = await worker.recognize(ocrCanvas.toDataURL('image/png'));
       const numeri = estraiNumeri(result.data.text);
       sheet.innerHTML = numeri.length === 0
         ? '<div class="sheet-hint">⚠️ Nessun numero trovato. Avvicina di più.</div>'
