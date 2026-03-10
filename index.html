@@ -25,7 +25,6 @@
   .header h1 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--text); line-height: 1.1; }
   .header p { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
-  /* Tab */
   .tabs { display: flex; margin: 0 20px 16px; background: var(--surface); border-radius: 14px; padding: 4px; gap: 4px; border: 1.5px solid var(--border); }
   .tab { flex: 1; padding: 10px; border: none; background: none; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
   .tab.active { background: var(--surface2); color: var(--text); }
@@ -33,11 +32,8 @@
   .badge.show { display: inline; }
 
   .main { padding: 0 20px 40px; display: flex; flex-direction: column; gap: 12px; }
-
-  /* 2 colonne */
   .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-  /* Card */
   .card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 18px; padding: 14px; position: relative; overflow: hidden; }
   .card::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s; pointer-events: none; border-radius: 18px; }
   .card.blue::before   { background: radial-gradient(circle at 20% 50%, rgba(68,138,255,0.1)  0%, transparent 70%); }
@@ -67,7 +63,6 @@
   .card-btn.green  { background: rgba(0,230,118,0.15);  border: 1.5px solid rgba(0,230,118,0.4);   color: #00e676; }
   .card-btn.purple { background: rgba(180,0,255,0.15);  border: 1.5px solid rgba(180,0,255,0.4);   color: #b400ff; }
 
-  /* Quantità */
   .qty-row { display: flex; align-items: center; background: var(--surface2); border-radius: 9px; overflow: hidden; margin-top: 10px; }
   .qty-btn { width: 36px; height: 36px; border: none; background: none; color: var(--text); font-size: 20px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; }
   .qty-btn:active { background: rgba(255,255,255,0.07); }
@@ -77,7 +72,6 @@
   .divider-line { flex: 1; height: 1px; background: var(--border); }
   .divider-text { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
 
-  /* Risultato */
   .result { background: linear-gradient(135deg, #0d2b1a, #0a1f2e); border: 1.5px solid rgba(0,230,118,0.25); border-radius: 22px; padding: 20px; text-align: center; display: none; animation: fadeUp 0.4s ease; overflow: hidden; }
   .result.show { display: block; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
@@ -91,13 +85,18 @@
   .btn-add-cart:active { opacity: 0.8; }
   .btn-reset-calc { flex: 1; padding: 13px; border: 1.5px solid var(--border); border-radius: 12px; background: none; color: var(--muted); font-size: 14px; font-weight: 600; cursor: pointer; }
 
-  /* ── PANNELLO CARRELLO ── */
+  /* Carrello */
   .add-full { background: var(--surface); border: 1.5px dashed var(--border); border-radius: 16px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
   .add-full:active { border-color: var(--blue); }
   .add-full-text strong { font-size: 14px; font-weight: 600; color: var(--text); display: block; }
   .add-full-text span { font-size: 12px; color: var(--muted); }
 
-  .cart-item { background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; animation: fadeUp 0.3s ease; }
+  .cart-item {
+    background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px;
+    padding: 12px 14px; display: flex; align-items: center; gap: 10px;
+    animation: fadeUp 0.3s ease; cursor: pointer; transition: border-color 0.2s;
+  }
+  .cart-item:active { border-color: rgba(0,230,118,0.4); }
   .cart-item-num { width: 26px; height: 26px; border-radius: 7px; background: var(--surface2); color: var(--muted); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .cart-item-info { flex: 1; min-width: 0; }
   .cart-item-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -110,7 +109,6 @@
   .empty-cart .empty-icon { font-size: 48px; margin-bottom: 12px; }
   .empty-cart p { font-size: 14px; line-height: 1.7; }
 
-  /* Totale fisso */
   .cart-total-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: linear-gradient(135deg, #0d2b1a, #0a1f2e); border-top: 1.5px solid rgba(0,230,118,0.25); padding: 14px 20px 30px; display: none; }
   .cart-total-bar.show { display: block; }
   .cart-total-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
@@ -120,11 +118,27 @@
   .btn-reset-cart { width: 100%; padding: 11px; border: 1.5px solid rgba(255,23,68,0.3); border-radius: 12px; background: rgba(255,23,68,0.08); color: var(--red); font-size: 14px; font-weight: 600; cursor: pointer; }
   .btn-reset-cart:active { background: rgba(255,23,68,0.18); }
 
-  /* Modal */
+  /* Modal generico */
   .modal-bg { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); align-items: flex-end; justify-content: center; }
   .modal-bg.show { display: flex; }
   .modal-sheet { background: #13131a; border: 1px solid #2a2a3a; border-radius: 24px 24px 0 0; padding: 28px 24px 48px; width: 100%; max-width: 480px; }
   .modal-handle { width: 36px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin: 0 auto 20px; }
+
+  /* Modal modifica articolo */
+  .edit-sheet { background: #13131a; border: 1px solid #2a2a3a; border-radius: 24px 24px 0 0; padding: 28px 24px 48px; width: 100%; max-width: 480px; }
+  .edit-field { margin-bottom: 16px; }
+  .edit-field-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; margin-bottom: 8px; }
+  .edit-input { width: 100%; padding: 13px 16px; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; color: var(--text); outline: none; }
+  .edit-input:focus { border-color: var(--green); }
+  .edit-input.num { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; -moz-appearance: textfield; appearance: textfield; }
+  .edit-qty-row { display: flex; align-items: center; background: var(--surface2); border-radius: 12px; overflow: hidden; border: 1.5px solid var(--border); }
+  .edit-qty-btn { width: 52px; height: 52px; border: none; background: none; color: var(--text); font-size: 24px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .edit-qty-btn:active { background: rgba(255,255,255,0.07); }
+  .edit-qty-val { flex: 1; text-align: center; font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 700; }
+  .edit-actions { display: flex; gap: 10px; margin-top: 20px; }
+  .edit-save { flex: 2; padding: 14px; border: none; border-radius: 12px; background: linear-gradient(135deg, var(--green), #00b248); color: #000; font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; }
+  .edit-save:active { opacity: 0.8; }
+  .edit-cancel { flex: 1; padding: 14px; border: 1.5px solid var(--border); border-radius: 12px; background: none; color: var(--muted); font-size: 14px; font-weight: 600; cursor: pointer; }
 
   .toast { position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%); background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 10px 20px; font-size: 13px; color: var(--text); z-index: 999; white-space: nowrap; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
   .toast.show { opacity: 1; }
@@ -140,7 +154,6 @@
   </div>
 </div>
 
-<!-- TAB -->
 <div class="tabs">
   <button class="tab active" id="tabCalc" onclick="switchTab('calc')">🧮 Calcola</button>
   <button class="tab" id="tabCart" onclick="switchTab('cart')">
@@ -148,9 +161,8 @@
   </button>
 </div>
 
-<!-- ═══ PANNELLO CALCOLA ═══ -->
+<!-- CALCOLA -->
 <div class="main" id="panelCalc">
-
   <div class="row2">
     <div class="card green active">
       <div class="card-icon">🏷️</div>
@@ -169,7 +181,6 @@
       </div>
     </div>
   </div>
-
   <div class="row2">
     <div class="card blue active">
       <div class="card-icon">💶</div>
@@ -198,12 +209,10 @@
       <button class="btn-reset-calc" onclick="resetCalc()">↺ Nuovo</button>
     </div>
   </div>
-
 </div>
 
-<!-- ═══ PANNELLO CARRELLO ═══ -->
+<!-- CARRELLO -->
 <div class="main" id="panelCart" style="display:none;">
-
   <div class="add-full" onclick="apriModal('diretto')">
     <div style="font-size:20px">💰</div>
     <div class="add-full-text" style="flex:1">
@@ -212,11 +221,8 @@
     </div>
     <div style="color:var(--muted);font-size:20px;font-weight:700">＋</div>
   </div>
-
   <div class="divider"><div class="divider-line"></div><div class="divider-text" id="cartDividerTxt">Articoli</div><div class="divider-line"></div></div>
-
   <div id="cartList"></div>
-
 </div>
 
 <!-- Totale fisso -->
@@ -231,7 +237,7 @@
   <button class="btn-reset-cart" onclick="svuotaCarrello()">🗑 Svuota carrello</button>
 </div>
 
-<!-- Modal -->
+<!-- Modal inserimento nuovo -->
 <div class="modal-bg" id="modalInput">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
@@ -250,6 +256,57 @@
   </div>
 </div>
 
+<!-- Modal modifica articolo carrello -->
+<div class="modal-bg" id="modalEdit">
+  <div class="edit-sheet">
+    <div class="modal-handle"></div>
+    <div style="font-family:Syne,sans-serif;font-size:18px;font-weight:700;color:#f0f0f5;margin-bottom:4px">✏️ Modifica articolo</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:20px" id="editSubtitle">Tocca un campo per modificarlo</div>
+
+    <div class="edit-field">
+      <div class="edit-field-label">🏷️ Nome articolo</div>
+      <input class="edit-input" id="editNome" type="text" placeholder="Es. Scarpe, Giacca...">
+    </div>
+
+    <div class="edit-field">
+      <div class="edit-field-label">💶 Prezzo unitario (€)</div>
+      <input class="edit-input num" id="editPrezzo" type="number" inputmode="decimal" step="0.01" min="0" placeholder="0">
+    </div>
+
+    <div class="edit-field">
+      <div class="edit-field-label">% Sconto (lascia 0 se nessuno)</div>
+      <input class="edit-input num" id="editSconto" type="number" inputmode="decimal" step="1" min="0" max="100" placeholder="0">
+    </div>
+
+    <div class="edit-field">
+      <div class="edit-field-label">🔢 Quantità</div>
+      <div class="edit-qty-row">
+        <button class="edit-qty-btn" onclick="cambiaEditQty(-1)">−</button>
+        <div class="edit-qty-val" id="editQtyVal">1</div>
+        <button class="edit-qty-btn" onclick="cambiaEditQty(+1)">+</button>
+      </div>
+    </div>
+
+    <div class="edit-actions">
+      <button class="edit-cancel" onclick="chiudiEdit()">Annulla</button>
+      <button class="edit-save" onclick="salvaModifica()">✓ Salva</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal conferma svuota -->
+<div class="modal-bg" id="modalSvuota">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div style="font-family:Syne,sans-serif;font-size:18px;font-weight:700;color:#f0f0f5;margin-bottom:8px">🗑 Svuota carrello</div>
+    <div style="font-size:14px;color:var(--muted);margin-bottom:24px">Vuoi eliminare tutti gli articoli dal carrello?</div>
+    <div style="display:flex;gap:10px">
+      <button onclick="annullaSvuota()" style="flex:1;padding:14px;background:#1c1c26;border:1.5px solid #2a2a3a;border-radius:12px;color:#6b6b80;font-size:15px;font-weight:600;cursor:pointer">Annulla</button>
+      <button onclick="confermaSvuota()" style="flex:2;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,#ff1744,#c62828);color:#fff;font-family:Syne,sans-serif;font-size:16px;font-weight:700;cursor:pointer">🗑 Svuota tutto</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -260,6 +317,10 @@
   let tipoModal = null;
   let ultimoFinale = null;
   let carrello = JSON.parse(localStorage.getItem('carrello') || '[]');
+
+  // Indice articolo in modifica
+  let editIndex = -1;
+  let editQty = 1;
 
   aggiornaCarrello();
 
@@ -273,7 +334,7 @@
     document.getElementById('cartTotalBar').classList.toggle('show', !isCalc && carrello.length > 0);
   }
 
-  // ── QUANTITÀ ──
+  // ── QUANTITÀ CALCOLA ──
   function cambiaQta(delta) {
     quantita = Math.max(1, quantita + delta);
     document.getElementById('qtyVal').textContent = quantita;
@@ -281,7 +342,7 @@
     if (prezzoOriginale !== null && percentualeSconto !== null) calcolaRisultato();
   }
 
-  // ── MODAL ──
+  // ── MODAL INSERIMENTO ──
   const CFGS = {
     nome:    { titolo: 'Nome articolo',         sub: 'Es. "Scarpe", "Giacca" (opzionale)', isNum: false, sym: '',  col: '#00e676', grad: 'linear-gradient(135deg,#00e676,#00b248)' },
     prezzo:  { titolo: 'Prezzo originale',       sub: 'Digita il prezzo in euro',           isNum: true,  sym: '€', col: '#448aff', grad: 'linear-gradient(135deg,#448aff,#1565c0)' },
@@ -295,24 +356,16 @@
     document.getElementById('manTitolo').textContent = c.titolo;
     document.getElementById('manSubtitle').textContent = c.sub;
     document.getElementById('manConfirm').style.background = c.grad;
-
     const sym = document.getElementById('manSymbol');
     const inp = document.getElementById('manInput');
-
     if (c.isNum) {
-      sym.textContent = c.sym;
-      sym.style.color = c.col;
-      sym.style.display = 'block';
-      inp.type = 'number';
-      inp.inputMode = 'decimal';
+      sym.textContent = c.sym; sym.style.color = c.col; sym.style.display = 'block';
+      inp.type = 'number'; inp.inputMode = 'decimal';
       inp.style.cssText += ';padding:16px 16px 16px 44px;font-family:Syne,sans-serif;font-size:28px;font-weight:700;-moz-appearance:textfield;appearance:textfield';
     } else {
-      sym.style.display = 'none';
-      inp.type = 'text';
-      inp.inputMode = 'text';
+      sym.style.display = 'none'; inp.type = 'text'; inp.inputMode = 'text';
       inp.style.cssText += ';padding:16px;font-family:DM Sans,sans-serif;font-size:18px;font-weight:500';
     }
-
     inp.value = tipo === 'nome' ? nomeArticolo : '';
     inp.style.borderColor = '#2a2a3a';
     document.getElementById('manConfirm').style.opacity = tipo === 'nome' ? '1' : '0.4';
@@ -335,16 +388,12 @@
 
   function confermaModal() {
     const raw = document.getElementById('manInput').value;
-
     if (tipoModal === 'nome') {
       nomeArticolo = raw.trim();
       const el = document.getElementById('valNome');
-      el.textContent = nomeArticolo || '—';
-      el.classList.toggle('placeholder', !nomeArticolo);
-      chiudiModal();
-      return;
+      el.textContent = nomeArticolo || '—'; el.classList.toggle('placeholder', !nomeArticolo);
+      chiudiModal(); return;
     }
-
     const val = parseFloat(raw);
     if (!val || isNaN(val) || val <= 0) { document.getElementById('manInput').style.borderColor = '#ff1744'; return; }
     if (tipoModal === 'sconto' && val > 100) { document.getElementById('manInput').style.borderColor = '#ff1744'; return; }
@@ -353,31 +402,23 @@
       prezzoOriginale = val;
       const el = document.getElementById('valPrezzo');
       el.textContent = `€ ${fmt(val)}`; el.classList.remove('placeholder');
-      chiudiModal();
-      setTimeout(() => apriModal('sconto'), 300);
-
+      chiudiModal(); setTimeout(() => apriModal('sconto'), 300);
     } else if (tipoModal === 'sconto') {
       percentualeSconto = val;
       const el = document.getElementById('valSconto');
       el.textContent = `${val.toFixed(0)}%`; el.classList.remove('placeholder');
-      chiudiModal();
-      calcolaRisultato();
-
+      chiudiModal(); calcolaRisultato();
     } else if (tipoModal === 'diretto') {
       const totale = val * quantita;
       const nome = nomeArticolo || 'Articolo';
       const desc = quantita > 1 ? `€ ${fmt(val)} × ${quantita} (prezzo intero)` : `€ ${fmt(val)} (prezzo intero)`;
-      aggiungiItem(totale, nome, desc);
-      chiudiModal();
-      mostraToast(`✅ ${nome} aggiunto!`);
+      aggiungiItem(totale, nome, desc, val, 0, quantita);
+      chiudiModal(); mostraToast(`✅ ${nome} aggiunto!`);
     }
   }
 
   // ── CALCOLO ──
-  function fmt(v) {
-    if (v === null || v === undefined) return '0';
-    return v % 1 === 0 ? v.toFixed(0) : v.toFixed(2);
-  }
+  function fmt(v) { return (!v && v !== 0) ? '0' : v % 1 === 0 ? v.toFixed(0) : v.toFixed(2); }
 
   function adattaFontSize(el) {
     const len = el.textContent.length;
@@ -390,42 +431,32 @@
     const finaleTot  = finaleUnit * quantita;
     const rispTot    = (prezzoOriginale - finaleUnit) * quantita;
     ultimoFinale = finaleTot;
-
     const el = document.getElementById('prezzoFinale');
-    el.textContent = `€ ${fmt(finaleTot)}`;
-    adattaFontSize(el);
-
+    el.textContent = `€ ${fmt(finaleTot)}`; adattaFontSize(el);
     const rn = document.getElementById('resNome');
-    rn.textContent = nomeArticolo;
-    rn.style.display = nomeArticolo ? 'block' : 'none';
-
+    rn.textContent = nomeArticolo; rn.style.display = nomeArticolo ? 'block' : 'none';
     const rd = document.getElementById('resDetail');
-    if (quantita > 1) {
-      rd.textContent = `€ ${fmt(finaleUnit)} × ${quantita} pezzi`;
-      rd.style.display = 'block';
-    } else {
-      rd.style.display = 'none';
-    }
-
+    if (quantita > 1) { rd.textContent = `€ ${fmt(finaleUnit)} × ${quantita} pezzi`; rd.style.display = 'block'; }
+    else rd.style.display = 'none';
     document.getElementById('risparmio').textContent = `💰 Risparmi € ${fmt(rispTot)}`;
     document.getElementById('risultato').classList.add('show');
   }
 
   function aggiungiAlCarrello() {
     if (ultimoFinale === null) return;
+    const finaleUnit = prezzoOriginale * (1 - percentualeSconto / 100);
     const nome = nomeArticolo || 'Articolo';
     const desc = quantita > 1
       ? `€ ${fmt(prezzoOriginale)} − ${percentualeSconto}% × ${quantita} = € ${fmt(ultimoFinale)}`
       : `€ ${fmt(prezzoOriginale)} − ${percentualeSconto}% = € ${fmt(ultimoFinale)}`;
-    aggiungiItem(ultimoFinale, nome, desc);
+    aggiungiItem(ultimoFinale, nome, desc, prezzoOriginale, percentualeSconto, quantita);
     mostraToast(`✅ ${nome} aggiunto!`);
     resetCalc();
   }
 
-  function aggiungiItem(prezzo, nome, desc) {
-    carrello.push({ prezzo, nome, desc });
-    salvaCarrello();
-    aggiornaCarrello();
+  function aggiungiItem(prezzo, nome, desc, prezzoUnit, sconto, qty) {
+    carrello.push({ prezzo, nome, desc, prezzoUnit: prezzoUnit || prezzo, sconto: sconto || 0, qty: qty || 1 });
+    salvaCarrello(); aggiornaCarrello();
   }
 
   function resetCalc() {
@@ -437,17 +468,59 @@
     document.getElementById('risultato').classList.remove('show');
   }
 
+  // ── MODIFICA ARTICOLO ──
+  function apriEdit(i) {
+    editIndex = i;
+    const item = carrello[i];
+    editQty = item.qty || 1;
+    document.getElementById('editNome').value = item.nome === 'Articolo' ? '' : item.nome;
+    document.getElementById('editPrezzo').value = item.prezzoUnit || item.prezzo;
+    document.getElementById('editSconto').value = item.sconto || 0;
+    document.getElementById('editQtyVal').textContent = editQty;
+    document.getElementById('editSubtitle').textContent = `Articolo ${i + 1} — tocca un campo per modificarlo`;
+    document.getElementById('modalEdit').classList.add('show');
+  }
+
+  function chiudiEdit() {
+    document.getElementById('modalEdit').classList.remove('show');
+    editIndex = -1;
+  }
+
+  function cambiaEditQty(delta) {
+    editQty = Math.max(1, editQty + delta);
+    document.getElementById('editQtyVal').textContent = editQty;
+  }
+
+  function salvaModifica() {
+    if (editIndex < 0) return;
+    const nome = document.getElementById('editNome').value.trim() || 'Articolo';
+    const prezzoUnit = parseFloat(document.getElementById('editPrezzo').value);
+    const sconto = parseFloat(document.getElementById('editSconto').value) || 0;
+
+    if (!prezzoUnit || isNaN(prezzoUnit) || prezzoUnit <= 0) {
+      document.getElementById('editPrezzo').style.borderColor = '#ff1744';
+      return;
+    }
+
+    const finaleUnit = prezzoUnit * (1 - sconto / 100);
+    const totalePrezz = finaleUnit * editQty;
+    const desc = sconto > 0
+      ? (editQty > 1 ? `€ ${fmt(prezzoUnit)} − ${sconto}% × ${editQty} = € ${fmt(totalePrezz)}` : `€ ${fmt(prezzoUnit)} − ${sconto}% = € ${fmt(totalePrezz)}`)
+      : (editQty > 1 ? `€ ${fmt(prezzoUnit)} × ${editQty} (prezzo intero)` : `€ ${fmt(prezzoUnit)} (prezzo intero)`);
+
+    carrello[editIndex] = { prezzo: totalePrezz, nome, desc, prezzoUnit, sconto, qty: editQty };
+    salvaCarrello(); aggiornaCarrello();
+    chiudiEdit();
+    mostraToast(`✅ ${nome} aggiornato!`);
+  }
+
   // ── CARRELLO ──
   function salvaCarrello() { localStorage.setItem('carrello', JSON.stringify(carrello)); }
 
   function aggiornaCarrello() {
     const n = carrello.length;
-
-    // Badge
     const badge = document.getElementById('cartBadge');
-    badge.textContent = n;
-    badge.classList.toggle('show', n > 0);
-
+    badge.textContent = n; badge.classList.toggle('show', n > 0);
     document.getElementById('cartDividerTxt').textContent = n > 0 ? `Articoli (${n})` : 'Articoli';
     const list = document.getElementById('cartList');
 
@@ -458,22 +531,20 @@
     }
 
     list.innerHTML = carrello.map((item, i) => `
-      <div class="cart-item">
+      <div class="cart-item" onclick="apriEdit(${i})">
         <div class="cart-item-num">${i + 1}</div>
         <div class="cart-item-info">
-          <div class="cart-item-name">${item.nome}</div>
+          <div class="cart-item-name">${item.nome} <span style="font-size:10px;color:var(--muted);font-weight:400">✏️</span></div>
           <div class="cart-item-desc">${item.desc}</div>
         </div>
         <div class="cart-item-price">€ ${fmt(item.prezzo)}</div>
-        <button class="cart-item-del" onclick="rimuoviArticolo(${i})">✕</button>
+        <button class="cart-item-del" onclick="event.stopPropagation();rimuoviArticolo(${i})">✕</button>
       </div>
     `).join('');
 
     const totale = carrello.reduce((s, it) => s + it.prezzo, 0);
     document.getElementById('cartTotalNum').textContent = `€ ${fmt(totale)}`;
     document.getElementById('cartTotalSub').textContent = `${n} articol${n === 1 ? 'o' : 'i'}`;
-
-    // Mostra barra totale solo se siamo nel tab carrello
     const inCart = document.getElementById('tabCart').classList.contains('active');
     if (inCart) document.getElementById('cartTotalBar').classList.add('show');
   }
@@ -481,8 +552,15 @@
   function rimuoviArticolo(i) { carrello.splice(i, 1); salvaCarrello(); aggiornaCarrello(); }
 
   function svuotaCarrello() {
-    if (!confirm('Svuotare tutto il carrello?')) return;
+    document.getElementById('modalSvuota').classList.add('show');
+  }
+  function confermaSvuota() {
+    document.getElementById('modalSvuota').classList.remove('show');
     carrello = []; salvaCarrello(); aggiornaCarrello();
+    mostraToast('🗑 Carrello svuotato');
+  }
+  function annullaSvuota() {
+    document.getElementById('modalSvuota').classList.remove('show');
   }
 
   function mostraToast(msg) {
@@ -497,8 +575,7 @@
   }
 
   document.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && tipoModal) confermaModal();
-    if (e.key === 'Escape' && tipoModal) chiudiModal();
+    if (e.key === 'Escape') { chiudiModal(); chiudiEdit(); }
   });
 
   switchTab('calc');
