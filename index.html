@@ -151,10 +151,11 @@
 
 <div class="header">
   <div class="header-icon">🏷️</div>
-  <div>
+  <div style="flex:1">
     <h1>Sconti Subito</h1>
     <p>Calcola il prezzo scontato istantaneamente</p>
   </div>
+  <button onclick="apriImpostazioni()" style="width:40px;height:40px;border-radius:12px;background:var(--surface2);border:1.5px solid var(--border);color:var(--muted);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">⚙️</button>
 </div>
 
 <div class="tabs">
@@ -306,6 +307,39 @@
     <div style="display:flex;gap:10px">
       <button onclick="annullaSvuota()" style="flex:1;padding:14px;background:#1c1c26;border:1.5px solid #2a2a3a;border-radius:12px;color:#6b6b80;font-size:15px;font-weight:600;cursor:pointer">Annulla</button>
       <button onclick="confermaSvuota()" style="flex:2;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,#ff1744,#c62828);color:#fff;font-family:Syne,sans-serif;font-size:16px;font-weight:700;cursor:pointer">🗑 Svuota tutto</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Impostazioni -->
+<div class="modal-bg" id="modalImpostazioni">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div style="font-family:Syne,sans-serif;font-size:18px;font-weight:700;color:#f0f0f5;margin-bottom:6px">⚙️ Impostazioni</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:24px">Gestione dati dell'app</div>
+
+    <div style="background:var(--surface2);border-radius:14px;padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:12px;">
+      <div style="font-size:22px">🗑</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:600;color:var(--text)">Cancella tutti i dati</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">Elimina carrello e dati salvati</div>
+      </div>
+      <button onclick="apriCancellazioneCompleta()" style="padding:8px 14px;background:rgba(255,23,68,0.15);border:1.5px solid rgba(255,23,68,0.3);border-radius:10px;color:var(--red);font-size:13px;font-weight:700;cursor:pointer;">Cancella</button>
+    </div>
+
+    <button onclick="chiudiImpostazioni()" style="width:100%;padding:13px;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;color:var(--muted);font-size:15px;font-weight:600;cursor:pointer;margin-top:4px;">Chiudi</button>
+  </div>
+</div>
+
+<!-- Modal conferma cancellazione completa -->
+<div class="modal-bg" id="modalCancella">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div style="font-family:Syne,sans-serif;font-size:18px;font-weight:700;color:#f0f0f5;margin-bottom:8px">🗑 Cancella tutti i dati</div>
+    <div style="font-size:14px;color:var(--muted);margin-bottom:24px">Verranno eliminati il carrello e tutti i dati salvati. Questa azione non è reversibile.</div>
+    <div style="display:flex;gap:10px">
+      <button onclick="chiudiCancellazione()" style="flex:1;padding:14px;background:#1c1c26;border:1.5px solid #2a2a3a;border-radius:12px;color:#6b6b80;font-size:15px;font-weight:600;cursor:pointer">Annulla</button>
+      <button onclick="cancellaEsegui()" style="flex:2;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,#ff1744,#c62828);color:#fff;font-family:Syne,sans-serif;font-size:16px;font-weight:700;cursor:pointer">Cancella tutto</button>
     </div>
   </div>
 </div>
@@ -570,6 +604,22 @@
     const t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  function apriImpostazioni() { document.getElementById('modalImpostazioni').classList.add('show'); }
+  function chiudiImpostazioni() { document.getElementById('modalImpostazioni').classList.remove('show'); }
+  function apriCancellazioneCompleta() {
+    chiudiImpostazioni();
+    setTimeout(() => document.getElementById('modalCancella').classList.add('show'), 200);
+  }
+  function chiudiCancellazione() { document.getElementById('modalCancella').classList.remove('show'); }
+  function cancellaEsegui() {
+    localStorage.clear();
+    carrello = [];
+    aggiornaCarrello();
+    resetCalc();
+    chiudiCancellazione();
+    mostraToast('✅ Tutti i dati cancellati!');
   }
 
   if ('serviceWorker' in navigator) {
