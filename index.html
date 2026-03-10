@@ -25,81 +25,103 @@
   .header h1 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--text); line-height: 1.1; }
   .header p { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
+  /* Tab */
   .tabs { display: flex; margin: 0 20px 16px; background: var(--surface); border-radius: 14px; padding: 4px; gap: 4px; border: 1.5px solid var(--border); }
-  .tab { flex: 1; padding: 10px; border: none; background: none; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all 0.2s; }
+  .tab { flex: 1; padding: 10px; border: none; background: none; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
   .tab.active { background: var(--surface2); color: var(--text); }
+  .badge { background: var(--green); color: #000; border-radius: 6px; padding: 1px 7px; font-size: 11px; font-weight: 700; display: none; }
+  .badge.show { display: inline; }
 
-  .main { padding: 0 20px 120px; display: flex; flex-direction: column; gap: 16px; }
+  .main { padding: 0 20px 40px; display: flex; flex-direction: column; gap: 12px; }
 
-  .card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 20px; padding: 20px; position: relative; }
-  .card::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s; pointer-events: none; border-radius: 20px; }
-  .card.blue::before { background: radial-gradient(circle at 20% 50%, rgba(68,138,255,0.08) 0%, transparent 70%); }
-  .card.orange::before { background: radial-gradient(circle at 20% 50%, rgba(255,145,0,0.08) 0%, transparent 70%); }
+  /* 2 colonne */
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* Card */
+  .card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 18px; padding: 14px; position: relative; overflow: hidden; }
+  .card::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s; pointer-events: none; border-radius: 18px; }
+  .card.blue::before   { background: radial-gradient(circle at 20% 50%, rgba(68,138,255,0.1)  0%, transparent 70%); }
+  .card.orange::before { background: radial-gradient(circle at 20% 50%, rgba(255,145,0,0.1)   0%, transparent 70%); }
+  .card.green::before  { background: radial-gradient(circle at 20% 50%, rgba(0,230,118,0.1)   0%, transparent 70%); }
+  .card.purple::before { background: radial-gradient(circle at 20% 50%, rgba(180,0,255,0.1)   0%, transparent 70%); }
   .card.active::before { opacity: 1; }
-  .card.active.blue { border-color: rgba(68,138,255,0.5); }
+  .card.active.blue   { border-color: rgba(68,138,255,0.5); }
   .card.active.orange { border-color: rgba(255,145,0,0.5); }
+  .card.active.green  { border-color: rgba(0,230,118,0.5); }
+  .card.active.purple { border-color: rgba(180,0,255,0.5); }
 
-  .card-row { display: flex; align-items: center; gap: 14px; }
-  .card-icon { width: 46px; height: 46px; border-radius: 13px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
-  .blue .card-icon { background: rgba(68,138,255,0.15); }
+  .card-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-bottom: 8px; }
+  .blue   .card-icon { background: rgba(68,138,255,0.15); }
   .orange .card-icon { background: rgba(255,145,0,0.15); }
-  .card-label { font-size: 12px; color: var(--muted); margin-bottom: 3px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
-  .card-value { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 700; color: var(--text); }
-  .card-value.placeholder { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 400; color: var(--muted); }
+  .green  .card-icon { background: rgba(0,230,118,0.15); }
+  .purple .card-icon { background: rgba(180,0,255,0.15); }
 
-  .insert-btn { margin-top: 12px; width: 100%; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: opacity 0.2s; border: none; }
-  .insert-btn:active { opacity: 0.7; }
-  .insert-btn.blue { background: rgba(68,138,255,0.15); border: 1.5px solid rgba(68,138,255,0.4); color: #448aff; }
-  .insert-btn.orange { background: rgba(255,145,0,0.15); border: 1.5px solid rgba(255,145,0,0.4); color: #ff9100; }
+  .card-label { font-size: 10px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .card-value { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .card-value.placeholder { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 400; color: var(--muted); }
+
+  .card-btn { margin-top: 10px; width: 100%; padding: 9px; border-radius: 9px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; border: none; transition: opacity 0.2s; }
+  .card-btn:active { opacity: 0.7; }
+  .card-btn.blue   { background: rgba(68,138,255,0.15); border: 1.5px solid rgba(68,138,255,0.4);  color: #448aff; }
+  .card-btn.orange { background: rgba(255,145,0,0.15);  border: 1.5px solid rgba(255,145,0,0.4);   color: #ff9100; }
+  .card-btn.green  { background: rgba(0,230,118,0.15);  border: 1.5px solid rgba(0,230,118,0.4);   color: #00e676; }
+  .card-btn.purple { background: rgba(180,0,255,0.15);  border: 1.5px solid rgba(180,0,255,0.4);   color: #b400ff; }
+
+  /* Quantità */
+  .qty-row { display: flex; align-items: center; background: var(--surface2); border-radius: 9px; overflow: hidden; margin-top: 10px; }
+  .qty-btn { width: 36px; height: 36px; border: none; background: none; color: var(--text); font-size: 20px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .qty-btn:active { background: rgba(255,255,255,0.07); }
+  .qty-val { flex: 1; text-align: center; font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; }
 
   .divider { display: flex; align-items: center; gap: 12px; padding: 0 4px; }
   .divider-line { flex: 1; height: 1px; background: var(--border); }
   .divider-text { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
 
-  .result { background: linear-gradient(135deg, #0d2b1a, #0a1f2e); border: 1.5px solid rgba(0,230,118,0.25); border-radius: 24px; padding: 24px; text-align: center; display: none; animation: fadeUp 0.4s ease; overflow: hidden; }
+  /* Risultato */
+  .result { background: linear-gradient(135deg, #0d2b1a, #0a1f2e); border: 1.5px solid rgba(0,230,118,0.25); border-radius: 22px; padding: 20px; text-align: center; display: none; animation: fadeUp 0.4s ease; overflow: hidden; }
   .result.show { display: block; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-  .result-label { font-size: 11px; color: rgba(0,230,118,0.6); letter-spacing: 2px; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
-  .result-price { font-family: 'Syne', sans-serif; font-weight: 800; color: var(--green); line-height: 1; text-shadow: 0 0 40px rgba(0,230,118,0.3); font-size: clamp(36px, 12vw, 58px); }
-  .result-saving { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 6px 16px; background: rgba(0,230,118,0.12); border-radius: 20px; font-size: 14px; font-weight: 500; color: var(--green); }
-
-  .result-actions { display: flex; gap: 10px; margin-top: 16px; }
-  .btn-add-cart { flex: 2; padding: 14px; border: none; border-radius: 12px; background: linear-gradient(135deg, var(--green), #00b248); color: #000; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: opacity 0.2s; }
+  .result-label  { font-size: 11px; color: rgba(0,230,118,0.6); letter-spacing: 2px; text-transform: uppercase; font-weight: 600; margin-bottom: 4px; }
+  .result-name   { font-size: 13px; color: rgba(0,230,118,0.85); font-weight: 600; margin-bottom: 4px; display: none; }
+  .result-price  { font-family: 'Syne', sans-serif; font-weight: 800; color: var(--green); line-height: 1; text-shadow: 0 0 40px rgba(0,230,118,0.3); font-size: clamp(34px,11vw,54px); }
+  .result-detail { font-size: 12px; color: var(--muted); margin-top: 4px; display: none; }
+  .result-saving { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; padding: 5px 14px; background: rgba(0,230,118,0.12); border-radius: 20px; font-size: 13px; font-weight: 500; color: var(--green); }
+  .result-actions { display: flex; gap: 10px; margin-top: 14px; }
+  .btn-add-cart { flex: 2; padding: 13px; border: none; border-radius: 12px; background: linear-gradient(135deg, var(--green), #00b248); color: #000; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .btn-add-cart:active { opacity: 0.8; }
-  .btn-reset-calc { flex: 1; padding: 14px; border: 1.5px solid var(--border); border-radius: 12px; background: none; color: var(--muted); font-size: 14px; font-weight: 600; cursor: pointer; }
-  .btn-reset-calc:active { color: var(--text); }
+  .btn-reset-calc { flex: 1; padding: 13px; border: 1.5px solid var(--border); border-radius: 12px; background: none; color: var(--muted); font-size: 14px; font-weight: 600; cursor: pointer; }
 
-  /* Carrello */
-  #panelCarrello { display: none; }
-  #panelCarrello.show { display: flex; flex-direction: column; gap: 16px; }
+  /* ── PANNELLO CARRELLO ── */
+  .add-full { background: var(--surface); border: 1.5px dashed var(--border); border-radius: 16px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
+  .add-full:active { border-color: var(--blue); }
+  .add-full-text strong { font-size: 14px; font-weight: 600; color: var(--text); display: block; }
+  .add-full-text span { font-size: 12px; color: var(--muted); }
+
+  .cart-item { background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; animation: fadeUp 0.3s ease; }
+  .cart-item-num { width: 26px; height: 26px; border-radius: 7px; background: var(--surface2); color: var(--muted); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .cart-item-info { flex: 1; min-width: 0; }
+  .cart-item-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cart-item-desc { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cart-item-price { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: var(--text); white-space: nowrap; margin-right: 4px; }
+  .cart-item-del { width: 30px; height: 30px; border-radius: 8px; background: rgba(255,23,68,0.1); border: 1px solid rgba(255,23,68,0.2); color: var(--red); font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .cart-item-del:active { background: rgba(255,23,68,0.25); }
 
   .empty-cart { text-align: center; padding: 48px 24px; color: var(--muted); }
   .empty-cart .empty-icon { font-size: 48px; margin-bottom: 12px; }
   .empty-cart p { font-size: 14px; line-height: 1.7; }
 
-  .cart-item { background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; animation: fadeUp 0.3s ease; }
-  .cart-item-num { width: 28px; height: 28px; border-radius: 8px; background: var(--surface2); color: var(--muted); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .cart-item-info { flex: 1; min-width: 0; }
-  .cart-item-desc { font-size: 12px; color: var(--muted); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .cart-item-price { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--text); }
-  .cart-item-del { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,23,68,0.1); border: 1px solid rgba(255,23,68,0.2); color: var(--red); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .cart-item-del:active { background: rgba(255,23,68,0.25); }
-
-  .add-full-price { background: var(--surface); border: 1.5px dashed var(--border); border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
-  .add-full-price:active { border-color: var(--blue); }
-  .add-full-price-text strong { font-size: 14px; font-weight: 600; color: var(--text); display: block; }
-  .add-full-price-text span { font-size: 12px; color: var(--muted); }
-
-  .cart-total-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: linear-gradient(135deg, #0d2b1a, #0a1f2e); border-top: 1.5px solid rgba(0,230,118,0.25); padding: 16px 20px 32px; display: none; }
+  /* Totale fisso */
+  .cart-total-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: linear-gradient(135deg, #0d2b1a, #0a1f2e); border-top: 1.5px solid rgba(0,230,118,0.25); padding: 14px 20px 30px; display: none; }
   .cart-total-bar.show { display: block; }
-  .cart-total-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-  .cart-total-label { font-size: 12px; color: rgba(0,230,118,0.6); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
-  .cart-total-num { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; color: var(--green); }
-  .cart-total-sub { font-size: 12px; color: var(--muted); }
-  .btn-reset-cart { width: 100%; padding: 12px; border: 1.5px solid rgba(255,23,68,0.3); border-radius: 12px; background: rgba(255,23,68,0.08); color: var(--red); font-size: 14px; font-weight: 600; cursor: pointer; }
+  .cart-total-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .cart-total-label { font-size: 11px; color: rgba(0,230,118,0.6); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
+  .cart-total-num { font-family: 'Syne', sans-serif; font-size: 30px; font-weight: 800; color: var(--green); }
+  .cart-total-sub { font-size: 11px; color: var(--muted); }
+  .btn-reset-cart { width: 100%; padding: 11px; border: 1.5px solid rgba(255,23,68,0.3); border-radius: 12px; background: rgba(255,23,68,0.08); color: var(--red); font-size: 14px; font-weight: 600; cursor: pointer; }
   .btn-reset-cart:active { background: rgba(255,23,68,0.18); }
 
-  .modal-bg { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); align-items: flex-end; justify-content: center; }
+  /* Modal */
+  .modal-bg { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); align-items: flex-end; justify-content: center; }
   .modal-bg.show { display: flex; }
   .modal-sheet { background: #13131a; border: 1px solid #2a2a3a; border-radius: 24px 24px 0 0; padding: 28px 24px 48px; width: 100%; max-width: 480px; }
   .modal-handle { width: 36px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin: 0 auto 20px; }
@@ -118,62 +140,83 @@
   </div>
 </div>
 
+<!-- TAB -->
 <div class="tabs">
   <button class="tab active" id="tabCalc" onclick="switchTab('calc')">🧮 Calcola</button>
-  <button class="tab" id="tabCart" onclick="switchTab('cart')">🛒 Carrello <span id="cartBadge" style="display:none;background:var(--green);color:#000;border-radius:6px;padding:1px 6px;font-size:11px;margin-left:4px">0</span></button>
+  <button class="tab" id="tabCart" onclick="switchTab('cart')">
+    🛒 Carrello <span class="badge" id="cartBadge">0</span>
+  </button>
 </div>
 
-<!-- CALCOLA -->
+<!-- ═══ PANNELLO CALCOLA ═══ -->
 <div class="main" id="panelCalc">
-  <div class="card blue active">
-    <div class="card-row">
-      <div class="card-icon">💶</div>
-      <div style="flex:1">
-        <div class="card-label">1 · Prezzo originale</div>
-        <div class="card-value placeholder" id="valPrezzo">Tocca per inserire</div>
+
+  <div class="row2">
+    <div class="card green active">
+      <div class="card-icon">🏷️</div>
+      <div class="card-label">Nome (opz.)</div>
+      <div class="card-value placeholder" id="valNome">—</div>
+      <button class="card-btn green" onclick="apriModal('nome')">✏️ Nome</button>
+    </div>
+    <div class="card purple active">
+      <div class="card-icon">🔢</div>
+      <div class="card-label">Quantità</div>
+      <div class="card-value" id="valQta">1</div>
+      <div class="qty-row">
+        <button class="qty-btn" onclick="cambiaQta(-1)">−</button>
+        <div class="qty-val" id="qtyVal">1</div>
+        <button class="qty-btn" onclick="cambiaQta(+1)">+</button>
       </div>
     </div>
-    <button class="insert-btn blue" onclick="apriManuale('prezzo')">✏️ Inserisci prezzo</button>
   </div>
 
-  <div class="card orange active">
-    <div class="card-row">
-      <div class="card-icon">%</div>
-      <div style="flex:1">
-        <div class="card-label">2 · Percentuale sconto</div>
-        <div class="card-value placeholder" id="valSconto">Tocca per inserire</div>
-      </div>
+  <div class="row2">
+    <div class="card blue active">
+      <div class="card-icon">💶</div>
+      <div class="card-label">Prezzo</div>
+      <div class="card-value placeholder" id="valPrezzo">—</div>
+      <button class="card-btn blue" onclick="apriModal('prezzo')">✏️ Prezzo</button>
     </div>
-    <button class="insert-btn orange" onclick="apriManuale('sconto')">✏️ Inserisci sconto</button>
+    <div class="card orange active">
+      <div class="card-icon">%</div>
+      <div class="card-label">Sconto %</div>
+      <div class="card-value placeholder" id="valSconto">—</div>
+      <button class="card-btn orange" onclick="apriModal('sconto')">✏️ Sconto</button>
+    </div>
   </div>
 
   <div class="divider"><div class="divider-line"></div><div class="divider-text">Risultato</div><div class="divider-line"></div></div>
 
   <div class="result" id="risultato">
     <div class="result-label">Prezzo finale</div>
+    <div class="result-name" id="resNome"></div>
     <div class="result-price" id="prezzoFinale">—</div>
+    <div class="result-detail" id="resDetail"></div>
     <div class="result-saving" id="risparmio">💰 Risparmi —</div>
     <div class="result-actions">
       <button class="btn-add-cart" onclick="aggiungiAlCarrello()">＋ Aggiungi al carrello</button>
       <button class="btn-reset-calc" onclick="resetCalc()">↺ Nuovo</button>
     </div>
   </div>
+
 </div>
 
-<!-- CARRELLO -->
-<div class="main" id="panelCarrello">
-  <div class="add-full-price" onclick="apriManuale('diretto')">
-    <div style="font-size:22px">💰</div>
-    <div class="add-full-price-text" style="flex:1">
+<!-- ═══ PANNELLO CARRELLO ═══ -->
+<div class="main" id="panelCart" style="display:none;">
+
+  <div class="add-full" onclick="apriModal('diretto')">
+    <div style="font-size:20px">💰</div>
+    <div class="add-full-text" style="flex:1">
       <strong>Aggiungi prezzo intero</strong>
       <span>Senza sconto, prezzo già noto</span>
     </div>
     <div style="color:var(--muted);font-size:20px;font-weight:700">＋</div>
   </div>
 
-  <div class="divider"><div class="divider-line"></div><div class="divider-text">Articoli</div><div class="divider-line"></div></div>
+  <div class="divider"><div class="divider-line"></div><div class="divider-text" id="cartDividerTxt">Articoli</div><div class="divider-line"></div></div>
 
   <div id="cartList"></div>
+
 </div>
 
 <!-- Totale fisso -->
@@ -189,20 +232,20 @@
 </div>
 
 <!-- Modal -->
-<div class="modal-bg" id="modalManuale">
+<div class="modal-bg" id="modalInput">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
     <div id="manTitolo" style="font-family:Syne,sans-serif;font-size:18px;font-weight:700;color:#f0f0f5;margin-bottom:6px"></div>
-    <div id="manSubtitle" style="font-size:13px;color:#6b6b80;margin-bottom:20px"></div>
+    <div id="manSubtitle" style="font-size:13px;color:#6b6b80;margin-bottom:16px"></div>
     <div style="position:relative">
-      <span id="manSymbol" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:22px;font-weight:700;color:#6b6b80">€</span>
-      <input id="manInput" type="number" inputmode="decimal" step="0.01" min="0"
-        style="width:100%;padding:16px 16px 16px 44px;background:#1c1c26;border:1.5px solid #2a2a3a;border-radius:14px;font-family:Syne,sans-serif;font-size:28px;font-weight:700;color:#f0f0f5;outline:none;-moz-appearance:textfield;appearance:textfield"
-        placeholder="0" oninput="aggiornaBottoneConferma(this)">
+      <span id="manSymbol" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:22px;font-weight:700;color:#6b6b80;display:none"></span>
+      <input id="manInput" placeholder="0"
+        style="width:100%;background:#1c1c26;border:1.5px solid #2a2a3a;border-radius:14px;color:#f0f0f5;outline:none;"
+        oninput="aggiornaConferma(this)">
     </div>
-    <div style="display:flex;gap:10px;margin-top:16px">
-      <button onclick="chiudiManuale()" style="flex:1;padding:14px;background:#1c1c26;border:1.5px solid #2a2a3a;border-radius:12px;color:#6b6b80;font-size:15px;font-weight:600;cursor:pointer">Annulla</button>
-      <button id="manConfirm" onclick="confermaManuale()" style="flex:2;padding:14px;border:none;border-radius:12px;font-family:Syne,sans-serif;font-size:16px;font-weight:700;color:#fff;cursor:pointer;opacity:0.4;transition:opacity 0.2s">✓ Conferma</button>
+    <div style="display:flex;gap:10px;margin-top:14px">
+      <button onclick="chiudiModal()" style="flex:1;padding:14px;background:#1c1c26;border:1.5px solid #2a2a3a;border-radius:12px;color:#6b6b80;font-size:15px;font-weight:600;cursor:pointer">Annulla</button>
+      <button id="manConfirm" onclick="confermaModal()" style="flex:2;padding:14px;border:none;border-radius:12px;font-family:Syne,sans-serif;font-size:16px;font-weight:700;color:#fff;cursor:pointer;opacity:0.4;transition:opacity 0.2s">✓ Conferma</button>
     </div>
   </div>
 </div>
@@ -210,130 +253,206 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  let prezzoOriginale = null, percentualeSconto = null;
-  let tipoManuale = null;
-  let ultimoFinale = null, ultimaDesc = null;
+  let nomeArticolo = '';
+  let prezzoOriginale = null;
+  let percentualeSconto = null;
+  let quantita = 1;
+  let tipoModal = null;
+  let ultimoFinale = null;
   let carrello = JSON.parse(localStorage.getItem('carrello') || '[]');
 
   aggiornaCarrello();
 
+  // ── TAB ──
   function switchTab(tab) {
-    document.getElementById('tabCalc').classList.toggle('active', tab === 'calc');
-    document.getElementById('tabCart').classList.toggle('active', tab === 'cart');
-    document.getElementById('panelCalc').style.display = tab === 'calc' ? 'flex' : 'none';
-    const pc = document.getElementById('panelCarrello');
-    if (tab === 'cart') pc.classList.add('show'); else pc.classList.remove('show');
-    const bar = document.getElementById('cartTotalBar');
-    bar.classList.toggle('show', tab === 'cart' && carrello.length > 0);
+    const isCalc = tab === 'calc';
+    document.getElementById('tabCalc').classList.toggle('active', isCalc);
+    document.getElementById('tabCart').classList.toggle('active', !isCalc);
+    document.getElementById('panelCalc').style.display = isCalc ? 'flex' : 'none';
+    document.getElementById('panelCart').style.display = isCalc ? 'none' : 'flex';
+    document.getElementById('cartTotalBar').classList.toggle('show', !isCalc && carrello.length > 0);
   }
 
-  function apriManuale(tipo) {
-    tipoManuale = tipo;
-    const cfg = {
-      prezzo:  { titolo: 'Inserisci prezzo',        sub: 'Digita il prezzo in euro',                       sym: '€', col: '#448aff', grad: 'linear-gradient(135deg,#448aff,#1565c0)' },
-      sconto:  { titolo: 'Inserisci sconto',         sub: 'Digita la percentuale (es. 30)',                 sym: '%', col: '#ff9100', grad: 'linear-gradient(135deg,#ff9100,#e65100)' },
-      diretto: { titolo: 'Aggiungi prezzo intero',   sub: 'Prezzo senza sconto da aggiungere al carrello', sym: '€', col: '#448aff', grad: 'linear-gradient(135deg,#448aff,#1565c0)' },
-    }[tipo];
-    document.getElementById('manTitolo').textContent = cfg.titolo;
-    document.getElementById('manSubtitle').textContent = cfg.sub;
-    document.getElementById('manSymbol').textContent = cfg.sym;
-    document.getElementById('manSymbol').style.color = cfg.col;
-    document.getElementById('manConfirm').style.background = cfg.grad;
-    document.getElementById('manInput').value = '';
-    document.getElementById('manInput').style.borderColor = '#2a2a3a';
-    document.getElementById('manConfirm').style.opacity = '0.4';
-    document.getElementById('modalManuale').classList.add('show');
-    setTimeout(() => document.getElementById('manInput').focus(), 150);
+  // ── QUANTITÀ ──
+  function cambiaQta(delta) {
+    quantita = Math.max(1, quantita + delta);
+    document.getElementById('qtyVal').textContent = quantita;
+    document.getElementById('valQta').textContent = quantita;
+    if (prezzoOriginale !== null && percentualeSconto !== null) calcolaRisultato();
   }
 
-  function aggiornaBottoneConferma(input) {
+  // ── MODAL ──
+  const CFGS = {
+    nome:    { titolo: 'Nome articolo',         sub: 'Es. "Scarpe", "Giacca" (opzionale)', isNum: false, sym: '',  col: '#00e676', grad: 'linear-gradient(135deg,#00e676,#00b248)' },
+    prezzo:  { titolo: 'Prezzo originale',       sub: 'Digita il prezzo in euro',           isNum: true,  sym: '€', col: '#448aff', grad: 'linear-gradient(135deg,#448aff,#1565c0)' },
+    sconto:  { titolo: 'Percentuale sconto',     sub: 'Digita la percentuale (es. 30)',      isNum: true,  sym: '%', col: '#ff9100', grad: 'linear-gradient(135deg,#ff9100,#e65100)' },
+    diretto: { titolo: 'Aggiungi prezzo intero', sub: 'Prezzo senza sconto',                isNum: true,  sym: '€', col: '#448aff', grad: 'linear-gradient(135deg,#448aff,#1565c0)' },
+  };
+
+  function apriModal(tipo) {
+    tipoModal = tipo;
+    const c = CFGS[tipo];
+    document.getElementById('manTitolo').textContent = c.titolo;
+    document.getElementById('manSubtitle').textContent = c.sub;
+    document.getElementById('manConfirm').style.background = c.grad;
+
+    const sym = document.getElementById('manSymbol');
+    const inp = document.getElementById('manInput');
+
+    if (c.isNum) {
+      sym.textContent = c.sym;
+      sym.style.color = c.col;
+      sym.style.display = 'block';
+      inp.type = 'number';
+      inp.inputMode = 'decimal';
+      inp.style.cssText += ';padding:16px 16px 16px 44px;font-family:Syne,sans-serif;font-size:28px;font-weight:700;-moz-appearance:textfield;appearance:textfield';
+    } else {
+      sym.style.display = 'none';
+      inp.type = 'text';
+      inp.inputMode = 'text';
+      inp.style.cssText += ';padding:16px;font-family:DM Sans,sans-serif;font-size:18px;font-weight:500';
+    }
+
+    inp.value = tipo === 'nome' ? nomeArticolo : '';
+    inp.style.borderColor = '#2a2a3a';
+    document.getElementById('manConfirm').style.opacity = tipo === 'nome' ? '1' : '0.4';
+    document.getElementById('modalInput').classList.add('show');
+    setTimeout(() => inp.focus(), 150);
+  }
+
+  function aggiornaConferma(input) {
+    if (tipoModal === 'nome') { document.getElementById('manConfirm').style.opacity = '1'; return; }
     const val = parseFloat(input.value);
     const ok = val > 0 && !isNaN(val);
-    input.style.borderColor = ok ? (tipoManuale === 'sconto' ? '#ff9100' : '#448aff') : '#2a2a3a';
+    input.style.borderColor = ok ? (tipoModal === 'sconto' ? '#ff9100' : '#448aff') : '#2a2a3a';
     document.getElementById('manConfirm').style.opacity = ok ? '1' : '0.4';
   }
 
-  function chiudiManuale() {
-    document.getElementById('modalManuale').classList.remove('show');
-    tipoManuale = null;
+  function chiudiModal() {
+    document.getElementById('modalInput').classList.remove('show');
+    tipoModal = null;
   }
 
-  function confermaManuale() {
-    const val = parseFloat(document.getElementById('manInput').value);
-    if (!val || isNaN(val) || val <= 0) { document.getElementById('manInput').style.borderColor = '#ff1744'; return; }
-    if (tipoManuale === 'sconto' && val > 100) { document.getElementById('manInput').style.borderColor = '#ff1744'; return; }
+  function confermaModal() {
+    const raw = document.getElementById('manInput').value;
 
-    if (tipoManuale === 'prezzo') {
+    if (tipoModal === 'nome') {
+      nomeArticolo = raw.trim();
+      const el = document.getElementById('valNome');
+      el.textContent = nomeArticolo || '—';
+      el.classList.toggle('placeholder', !nomeArticolo);
+      chiudiModal();
+      return;
+    }
+
+    const val = parseFloat(raw);
+    if (!val || isNaN(val) || val <= 0) { document.getElementById('manInput').style.borderColor = '#ff1744'; return; }
+    if (tipoModal === 'sconto' && val > 100) { document.getElementById('manInput').style.borderColor = '#ff1744'; return; }
+
+    if (tipoModal === 'prezzo') {
       prezzoOriginale = val;
       const el = document.getElementById('valPrezzo');
       el.textContent = `€ ${fmt(val)}`; el.classList.remove('placeholder');
-      chiudiManuale();
-      setTimeout(() => apriManuale('sconto'), 300);
+      chiudiModal();
+      setTimeout(() => apriModal('sconto'), 300);
 
-    } else if (tipoManuale === 'sconto') {
+    } else if (tipoModal === 'sconto') {
       percentualeSconto = val;
       const el = document.getElementById('valSconto');
-      el.textContent = `${val.toFixed(0)} %`; el.classList.remove('placeholder');
-      chiudiManuale();
+      el.textContent = `${val.toFixed(0)}%`; el.classList.remove('placeholder');
+      chiudiModal();
       calcolaRisultato();
 
-    } else if (tipoManuale === 'diretto') {
-      aggiungiItem(val, `€ ${fmt(val)} (prezzo intero)`);
-      chiudiManuale();
-      mostraToast(`✅ € ${fmt(val)} aggiunto!`);
+    } else if (tipoModal === 'diretto') {
+      const totale = val * quantita;
+      const nome = nomeArticolo || 'Articolo';
+      const desc = quantita > 1 ? `€ ${fmt(val)} × ${quantita} (prezzo intero)` : `€ ${fmt(val)} (prezzo intero)`;
+      aggiungiItem(totale, nome, desc);
+      chiudiModal();
+      mostraToast(`✅ ${nome} aggiunto!`);
     }
   }
 
-  function fmt(v) { return (!v && v !== 0) ? '0' : v % 1 === 0 ? v.toFixed(0) : v.toFixed(2); }
+  // ── CALCOLO ──
+  function fmt(v) {
+    if (v === null || v === undefined) return '0';
+    return v % 1 === 0 ? v.toFixed(0) : v.toFixed(2);
+  }
 
   function adattaFontSize(el) {
     const len = el.textContent.length;
-    el.style.fontSize = len <= 8 ? 'clamp(36px,12vw,58px)' : len <= 11 ? 'clamp(28px,9vw,44px)' : 'clamp(22px,7vw,34px)';
+    el.style.fontSize = len <= 8 ? 'clamp(34px,11vw,54px)' : len <= 11 ? 'clamp(26px,9vw,42px)' : 'clamp(20px,7vw,32px)';
   }
 
   function calcolaRisultato() {
     if (prezzoOriginale === null || percentualeSconto === null) return;
-    const finale = prezzoOriginale * (1 - percentualeSconto / 100);
-    const risparmio = prezzoOriginale - finale;
-    ultimoFinale = finale;
-    ultimaDesc = `€ ${fmt(prezzoOriginale)} − ${percentualeSconto}% → € ${fmt(finale)}`;
+    const finaleUnit = prezzoOriginale * (1 - percentualeSconto / 100);
+    const finaleTot  = finaleUnit * quantita;
+    const rispTot    = (prezzoOriginale - finaleUnit) * quantita;
+    ultimoFinale = finaleTot;
+
     const el = document.getElementById('prezzoFinale');
-    el.textContent = `€ ${fmt(finale)}`;
+    el.textContent = `€ ${fmt(finaleTot)}`;
     adattaFontSize(el);
-    document.getElementById('risparmio').textContent = `💰 Risparmi € ${fmt(risparmio)}`;
+
+    const rn = document.getElementById('resNome');
+    rn.textContent = nomeArticolo;
+    rn.style.display = nomeArticolo ? 'block' : 'none';
+
+    const rd = document.getElementById('resDetail');
+    if (quantita > 1) {
+      rd.textContent = `€ ${fmt(finaleUnit)} × ${quantita} pezzi`;
+      rd.style.display = 'block';
+    } else {
+      rd.style.display = 'none';
+    }
+
+    document.getElementById('risparmio').textContent = `💰 Risparmi € ${fmt(rispTot)}`;
     document.getElementById('risultato').classList.add('show');
   }
 
   function aggiungiAlCarrello() {
     if (ultimoFinale === null) return;
-    aggiungiItem(ultimoFinale, ultimaDesc);
-    mostraToast(`✅ Aggiunto! ${carrello.length} articol${carrello.length === 1 ? 'o' : 'i'} nel carrello`);
+    const nome = nomeArticolo || 'Articolo';
+    const desc = quantita > 1
+      ? `€ ${fmt(prezzoOriginale)} − ${percentualeSconto}% × ${quantita} = € ${fmt(ultimoFinale)}`
+      : `€ ${fmt(prezzoOriginale)} − ${percentualeSconto}% = € ${fmt(ultimoFinale)}`;
+    aggiungiItem(ultimoFinale, nome, desc);
+    mostraToast(`✅ ${nome} aggiunto!`);
     resetCalc();
   }
 
-  function aggiungiItem(prezzo, desc) {
-    carrello.push({ prezzo, desc });
+  function aggiungiItem(prezzo, nome, desc) {
+    carrello.push({ prezzo, nome, desc });
     salvaCarrello();
     aggiornaCarrello();
   }
 
   function resetCalc() {
-    prezzoOriginale = null; percentualeSconto = null; ultimoFinale = null; ultimaDesc = null;
-    const vp = document.getElementById('valPrezzo'); vp.textContent = 'Tocca per inserire'; vp.classList.add('placeholder');
-    const vs = document.getElementById('valSconto'); vs.textContent = 'Tocca per inserire'; vs.classList.add('placeholder');
+    nomeArticolo = ''; prezzoOriginale = null; percentualeSconto = null; quantita = 1; ultimoFinale = null;
+    document.getElementById('valNome').textContent = '—'; document.getElementById('valNome').classList.add('placeholder');
+    document.getElementById('valPrezzo').textContent = '—'; document.getElementById('valPrezzo').classList.add('placeholder');
+    document.getElementById('valSconto').textContent = '—'; document.getElementById('valSconto').classList.add('placeholder');
+    document.getElementById('qtyVal').textContent = '1'; document.getElementById('valQta').textContent = '1';
     document.getElementById('risultato').classList.remove('show');
   }
 
+  // ── CARRELLO ──
   function salvaCarrello() { localStorage.setItem('carrello', JSON.stringify(carrello)); }
 
   function aggiornaCarrello() {
-    const badge = document.getElementById('cartBadge');
-    badge.style.display = carrello.length > 0 ? 'inline' : 'none';
-    badge.textContent = carrello.length;
+    const n = carrello.length;
 
+    // Badge
+    const badge = document.getElementById('cartBadge');
+    badge.textContent = n;
+    badge.classList.toggle('show', n > 0);
+
+    document.getElementById('cartDividerTxt').textContent = n > 0 ? `Articoli (${n})` : 'Articoli';
     const list = document.getElementById('cartList');
-    if (carrello.length === 0) {
-      list.innerHTML = `<div class="empty-cart"><div class="empty-icon">🛒</div><p>Nessun articolo ancora.<br>Calcola uno sconto e premi<br><strong>＋ Aggiungi al carrello</strong></p></div>`;
+
+    if (n === 0) {
+      list.innerHTML = `<div class="empty-cart"><div class="empty-icon">🛒</div><p>Nessun articolo ancora.<br>Vai su <strong>Calcola</strong> e premi<br><strong>＋ Aggiungi al carrello</strong></p></div>`;
       document.getElementById('cartTotalBar').classList.remove('show');
       return;
     }
@@ -342,17 +461,19 @@
       <div class="cart-item">
         <div class="cart-item-num">${i + 1}</div>
         <div class="cart-item-info">
+          <div class="cart-item-name">${item.nome}</div>
           <div class="cart-item-desc">${item.desc}</div>
-          <div class="cart-item-price">€ ${fmt(item.prezzo)}</div>
         </div>
+        <div class="cart-item-price">€ ${fmt(item.prezzo)}</div>
         <button class="cart-item-del" onclick="rimuoviArticolo(${i})">✕</button>
       </div>
     `).join('');
 
-    const totale = carrello.reduce((s, i) => s + i.prezzo, 0);
+    const totale = carrello.reduce((s, it) => s + it.prezzo, 0);
     document.getElementById('cartTotalNum').textContent = `€ ${fmt(totale)}`;
-    document.getElementById('cartTotalSub').textContent = `${carrello.length} articol${carrello.length === 1 ? 'o' : 'i'}`;
+    document.getElementById('cartTotalSub').textContent = `${n} articol${n === 1 ? 'o' : 'i'}`;
 
+    // Mostra barra totale solo se siamo nel tab carrello
     const inCart = document.getElementById('tabCart').classList.contains('active');
     if (inCart) document.getElementById('cartTotalBar').classList.add('show');
   }
@@ -376,8 +497,8 @@
   }
 
   document.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && tipoManuale) confermaManuale();
-    if (e.key === 'Escape' && tipoManuale) chiudiManuale();
+    if (e.key === 'Enter' && tipoModal) confermaModal();
+    if (e.key === 'Escape' && tipoModal) chiudiModal();
   });
 
   switchTab('calc');
